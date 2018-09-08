@@ -32,16 +32,10 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import mayflower.util.Logger;
+package actors.characters;
 
-public class Main {
-    private static Logger log;
+import actors.core.AnimatedActor;
+import mayflower.Actor;
 
-    public static void main(String[] args) {
-
-    }
-
-    public Logger getLog() {
-        return log;
-    }
+public class Player extends AnimatedActor {
 }

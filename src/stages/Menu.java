@@ -32,16 +32,14 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import mayflower.util.Logger;
+package stages;
 
-public class Main {
-    private static Logger log;
+import core.StageManager;
+import mayflower.World;
 
-    public static void main(String[] args) {
+public class Menu extends World {
+    @Override
+    public void act() {
 
-    }
-
-    public Logger getLog() {
-        return log;
     }
 }
