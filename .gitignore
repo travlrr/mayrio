@@ -98,3 +98,7 @@ fabric.properties
 
 # Editor-based Rest Client
 .idea/httpRequests
+
+# Markdown Navigator plugin
+.idea/markdown-navigator
+.idea/markdown-navigator.xml
