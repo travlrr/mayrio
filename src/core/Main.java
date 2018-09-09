@@ -17,18 +17,19 @@
 
 package core;
 
-import javafx.stage.Stage;
+import core.sprites.Dimension;
+import core.sprites.Sprite;
+import core.sprites.SpriteSheet;
+import core.util.log.MayrioLogger;
 
-import java.util.HashMap;
+public class Main {
+    private static MayrioLogger logger;
 
-public class StageManager {
-    private static HashMap<String, Stage> stages;
+    public static void main(String[] args) {
+        logger = new MayrioLogger(Main.class);
 
-    public StageManager() {
-
-    }
-
-    public static void addStage(String name, Stage stage) {
-        stages.put(name, stage);
+        // Test code for SpriteSheet
+        SpriteSheet sheet = new SpriteSheet(new Dimension(16,32), "/sprites/mario_large.png");
+        Sprite test = sheet.getSprite(1);
     }
 }

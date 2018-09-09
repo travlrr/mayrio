@@ -15,20 +15,25 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core;
+package core.util.log;
 
-import javafx.stage.Stage;
-
-import java.util.HashMap;
-
-public class StageManager {
-    private static HashMap<String, Stage> stages;
-
-    public StageManager() {
-
+/**
+ * This RuntimeException only occurs when a class tries to pass ALL or NONE to MayrioLogger.log().
+ */
+class InvalidLogLevelException extends RuntimeException {
+    InvalidLogLevelException() {
+        super();
     }
 
-    public static void addStage(String name, Stage stage) {
-        stages.put(name, stage);
+    InvalidLogLevelException(String message) {
+        super(message);
+    }
+
+    InvalidLogLevelException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    InvalidLogLevelException(Throwable cause) {
+        super(cause);
     }
 }

@@ -15,20 +15,19 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core;
+package core.util.log;
 
-import javafx.stage.Stage;
+/**
+ * Log level enumerator for MayrioLogger.
+ * The MayrioLogger follows a hierarchical system much like most mainstream logging libraries.
+ * <p>
+ * The levels, from finest to coarsest, are as follows:
+ * ALL > DEBUG > INFO > WARN > ERROR > FATAL > NONE
+ */
+public enum LogLevel {
+    ALL, DEBUG, INFO, WARN, ERROR, FATAL, NONE;
 
-import java.util.HashMap;
-
-public class StageManager {
-    private static HashMap<String, Stage> stages;
-
-    public StageManager() {
-
-    }
-
-    public static void addStage(String name, Stage stage) {
-        stages.put(name, stage);
+    public String getAbbreviation() {
+        return this.name().substring(0, 1);
     }
 }

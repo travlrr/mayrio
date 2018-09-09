@@ -58,5 +58,4 @@ public class Animation {
             p.setTransparency(percent);
         }
     }
-
 }

@@ -15,20 +15,25 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core;
+package core.sprites;
 
-import javafx.stage.Stage;
-
-import java.util.HashMap;
-
-public class StageManager {
-    private static HashMap<String, Stage> stages;
-
-    public StageManager() {
-
+/**
+ * This RuntimeException is thrown when a dimension passed to a SpriteSheet is
+ */
+class InvalidSpriteSizeException extends RuntimeException {
+    InvalidSpriteSizeException() {
+        super();
     }
 
-    public static void addStage(String name, Stage stage) {
-        stages.put(name, stage);
+    InvalidSpriteSizeException(String message) {
+        super(message);
+    }
+
+    InvalidSpriteSizeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    InvalidSpriteSizeException(Throwable cause) {
+        super(cause);
     }
 }

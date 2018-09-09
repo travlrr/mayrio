@@ -37,6 +37,9 @@ hs_err_pid*
 .idea/**/workspace.xml
 .idea/**/uiDesigner.xml
 .idea/**/workspace.xml
+.idea/**/vcs.xml
+.idea/**/modules.xml
+.idea/**/misc.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
