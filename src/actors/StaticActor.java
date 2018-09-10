@@ -15,10 +15,25 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.characters;
+package actors;
 
-import actors.core.AnimatedActor;
+import mayflower.Actor;
+import mayflower.MayflowerImage;
 
-// TODO: Add basic game behavior to Player
-public class Player extends AnimatedActor {
+/**
+ * StaticActors are a simple extension of the Actor class that do not move.
+ * These are ideal for ground tiles, backgrounds, and the like.
+ */
+public class StaticActor extends Actor {
+    private MayflowerImage sprite;
+    private boolean collides;
+
+    public StaticActor(MayflowerImage sprite, boolean enableCollision) {
+        this.sprite = sprite;
+        this.collides = enableCollision;
+    }
+
+    @Override
+    public void act() {
+    }
 }

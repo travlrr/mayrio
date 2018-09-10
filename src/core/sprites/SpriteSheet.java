@@ -19,39 +19,39 @@ package core.sprites;
 
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
+import mayflower.MayflowerImage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 /**
  * The SpriteSheet class represents a full sprite sheet image, and provides functionality for fetching sprites from the sheet.
+ * <p>
+ * Sprite sheet images provided to this class should contain sprites of uniform size. All the other work is done for you.
+ * The slice tool in Adobe Photoshop
  */
 public class SpriteSheet {
-    private MayrioLogger logger;
-
+    private static final MayrioLogger logger = new MayrioLogger(SpriteSheet.class);
+    private final boolean usesIntegerKeys;
     private Dimension spriteSize;
     private String path;
     private BufferedImage sheet;
-    private HashMap<Object, Sprite> sprites;
-    private boolean usesIntKeys;
+    private HashMap<Object, MayflowerImage> sprites;
 
     /**
      * Constructs a new SpriteSheet, splitting the given sheet image into usable chunks by row-major order.
-     * Since names for each sprite are not provided to this constructor, the sprite HashMap uses integer keys instead.
+     * The SpriteSheet uses integer indexes when names are not provided.
      *
      * @param spriteSize Size of each sprite (width x height)
      * @param sheetPath  The full path relative to the project root for the sprite sheet image.
      */
     public SpriteSheet(Dimension spriteSize, String sheetPath) {
-        this.usesIntKeys = true;
         this.path = sheetPath;
+        this.spriteSize = spriteSize;
+        this.usesIntegerKeys = true;
         this.sprites = new HashMap<>();
-
-        // Create a logger for this class
-        this.logger = new MayrioLogger(SpriteSheet.class);
 
         // Fetch the BufferedImage at the given path
         this.sheet = getImage(sheetPath);
@@ -67,11 +67,10 @@ public class SpriteSheet {
 
         // Populate sprites
         int cellIndex = 1;
-        for(int r = 0; r < nRows; r++) {
-            for(int c = 0; c < nColumns; c++) {
-                BufferedImage spriteImage = sheet.getSubimage(c*spriteSize.getWidth(), r*spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
-                sprites.put(cellIndex, new Sprite(spriteImage, this));
-                cellIndex++;
+        for (int r = 0; r < nRows; r++) {
+            for (int c = 0; c < nColumns; c++) {
+                BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
+                sprites.put(cellIndex, bufferedImageToMayflowerImage(spriteImage));
             }
         }
     }
@@ -81,14 +80,13 @@ public class SpriteSheet {
      *
      * @param spriteSize Size of each sprite (width x height)
      * @param sheetPath  The full path relative to the project root for the sprite sheet image.
-     * @param names Names for each sprite.
+     * @param names      Names for each sprite.
      */
     public SpriteSheet(Dimension spriteSize, String sheetPath, String[] names) {
-        this.usesIntKeys = false;
         this.path = sheetPath;
-
-        // Create a logger for this class
-        this.logger = new MayrioLogger(SpriteSheet.class);
+        this.spriteSize = spriteSize;
+        this.usesIntegerKeys = false;
+        this.sprites = new HashMap<>();
 
         // Fetch the BufferedImage at the given path
         this.sheet = getImage(sheetPath);
@@ -104,40 +102,40 @@ public class SpriteSheet {
 
         // Populate sprites
         int cellIndex = 1;
-        for(int r = 0; r < nRows; r++) {
-            for(int c = 0; c < nColumns; c++) {
-                BufferedImage spriteImage = sheet.getSubimage(c*spriteSize.getWidth(), r*spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
-                sprites.put(names[cellIndex], new Sprite(spriteImage, this));
+        for (int r = 0; r < nRows; r++) {
+            for (int c = 0; c < nColumns; c++) {
+                BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
+                sprites.put(names[cellIndex], bufferedImageToMayflowerImage(spriteImage));
             }
         }
     }
 
     /**
      * Returns whether or not this sheet has a sprite paired with the given key
+     *
      * @param key Key to check
      * @return Boolean result
      */
     public boolean hasSprite(Object key) {
-        return sprites.containsKey(key) && sprites.get(key)!=null;
+        return sprites.containsKey(key) && sprites.get(key) != null;
     }
 
     /**
      * Returns the sprite paired with the given key
+     *
      * @param key Key to get sprite from
      * @return Sprite at the given key
      */
-    public Sprite getSprite(Object key) {
+    public MayflowerImage getSprite(Object key) {
         return sprites.get(key);
     }
 
     /**
-     * Returns whether or not this sheet uses integers for its keys
-     * @return Boolean result
+     * Get a BufferedImage by file path.
+     *
+     * @param path Path to fetch image from
+     * @return BufferedImage from path
      */
-    public boolean usesIntegerKeys() {
-        return this.usesIntKeys;
-    }
-
     private BufferedImage getImage(String path) {
         BufferedImage ret = null;
         try {
@@ -145,6 +143,30 @@ public class SpriteSheet {
         } catch (IOException ex) {
             ex.printStackTrace();
             logger.log(LogLevel.ERROR, "A SpriteSheet was passed an invalid path!");
+        }
+        return ret;
+    }
+
+    public boolean usesIntegerKeys() {
+        return this.usesIntegerKeys;
+    }
+
+    /**
+     * Converts a BufferedImage to a MayflowerImage.
+     * The implementation for this is abhorrent, but it's a necessary workaround
+     * since MayflowerImage doesn't provide a constructor that accepts a BufferedImage.
+     * It works without any performance problems (theoretically) at smaller image sizes, though.
+     *
+     * @param image The BufferedImage to convert
+     * @return The converted MayflowerImage
+     */
+    private MayflowerImage bufferedImageToMayflowerImage(BufferedImage image) {
+        MayflowerImage ret = new MayflowerImage(image.getWidth(), image.getHeight());
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                mayflower.Color currentPixel = new mayflower.Color(new java.awt.Color(image.getRGB(x, y)));
+                ret.setColorAt(x, y, currentPixel);
+            }
         }
         return ret;
     }

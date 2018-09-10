@@ -22,51 +22,35 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Mayrio's logging framework.
- * Provides several log levels to allow filtering of log output.
- * MayrioLogger instances shouldn't be shared between classes.
+ * Mayrio's logging framework. Provides several log levels to allow filtering of log output.
+ * The current log level is shared across all instances of MayrioLogger, always defaulting to LogLevel.ERROR.
+ * MayrioLogger instances SHOULD NOT be shared between classes.
  */
 public class MayrioLogger {
-    private LogLevel level;
-    private PrintStream output;
+    private static LogLevel level = LogLevel.ERROR;
     private Object owner;
+    private PrintStream output;
 
     /**
      * Constructs a new MayrioLogger.
-     * The stream defaults to System.out, and the log level defaults to LogLevel.ERROR.
+     * The output stream defaults to System.out.
      *
      * @param owner The owner of this logger. This should be the class that constructed the logger.
      */
     public MayrioLogger(Object owner) {
-        this.level = LogLevel.DEBUG;
-        this.output = System.out;
         this.owner = owner;
+        this.output = System.out;
     }
 
     /**
      * Constructs a new MayrioLogger, outputting to the given stream.
-     * The log level defaults to LogLevel.ERROR.
      *
      * @param owner  The owner of this logger. This should be the class that constructed the logger.
      * @param output The stream that this logger should output to.
      */
     public MayrioLogger(Object owner, PrintStream output) {
-        this.level = LogLevel.DEBUG;
-        this.output = output;
         this.owner = owner;
-    }
-
-    /**
-     * Constructs a new MayrioLogger, outputting to the given stream and with the given level.
-     *
-     * @param owner  The owner of this logger. This should be the class that constructed the logger.
-     * @param output The stream that this logger should output to.
-     * @param level  The initial log level of this logger. Can be changed with setLevel().
-     */
-    public MayrioLogger(Object owner, PrintStream output, LogLevel level) {
-        this.level = LogLevel.DEBUG;
         this.output = output;
-        this.owner = owner;
     }
 
     /**
@@ -83,8 +67,8 @@ public class MayrioLogger {
      *
      * @param level Log level to change to
      */
-    public void setLevel(LogLevel level) {
-        this.level = level;
+    public static void setLevel(LogLevel level) {
+        MayrioLogger.level = level;
     }
 
     /**
@@ -94,13 +78,19 @@ public class MayrioLogger {
      * @param o     The object to log. This should usually be a string.
      */
     public void log(LogLevel level, Object o) {
-        // Get current LocalDateTime and set up date formatters
-        LocalDateTime time = LocalDateTime.now();
 
         // Check validity of LogLevel
         if (level.equals(LogLevel.ALL) | level.equals(LogLevel.NONE)) {
-            throw new InvalidLogLevelException(String.format("An instance of %s tried to use an invalid log level!", owner.getClass().getName()));
+            throw new IllegalArgumentException(String.format("An instance of %s tried to use an invalid log level!", owner.getClass().getName()));
         }
+
+        // Make sure the message should be logged given the current LogLevel, otherwise ignore it
+        if (!level.isAllowedAtLevel(MayrioLogger.level)) {
+            return;
+        }
+
+        // Get current LocalDateTime and set up date formatters
+        LocalDateTime time = LocalDateTime.now();
 
         /*
          * Log the event!

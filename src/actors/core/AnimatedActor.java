@@ -17,5 +17,26 @@
 
 package actors.core;
 
-public class AnimatedActor {
+import mayflower.Actor;
+
+/*
+ * TODO: Finish AnimatedActor
+ * Animations
+ */
+public class AnimatedActor extends Actor {
+    private AnimationSet animations;
+    private Animation currentAnimation;
+
+    @Override
+    public void act() {
+
+    }
+
+    public AnimationSet getAnimations() {
+        return this.animations;
+    }
+
+    public void setAnimation(String name) {
+        this.currentAnimation = animations.getAnimation(name);
+    }
 }

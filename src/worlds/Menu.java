@@ -15,10 +15,13 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.characters;
+package worlds;
 
-import actors.core.AnimatedActor;
+import mayflower.World;
 
-// TODO: Add basic game behavior to Player
-public class Player extends AnimatedActor {
+public class Menu extends World {
+    @Override
+    public void act() {
+
+    }
 }

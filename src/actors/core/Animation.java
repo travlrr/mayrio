@@ -19,19 +19,40 @@ package actors.core;
 
 import mayflower.MayflowerImage;
 
+/**
+ * The Animation class represents a set of images intended to be played as an animation.
+ */
 public class Animation {
 
     private MayflowerImage[] frames;
     private int currentFrame;
     private int frameRate;
 
+    /**
+     * Construct a new Animation with the given filenames.
+     * Each MayflowerImage frame will be constructed automatically.
+     *
+     * @param rate      Framerate of the animation
+     * @param filenames Filenames for each frame
+     */
     public Animation(int rate, String[] filenames) {
         frames = new MayflowerImage[filenames.length];
-
         for (int i = 0; i < filenames.length; i++) {
             frames[i] = new MayflowerImage(filenames[i]);
         }
 
+        currentFrame = 0;
+        frameRate = rate;
+    }
+
+    /**
+     * Construct a new Animation with pre-constructed MayflowerImage frames.
+     *
+     * @param rate   Framerate of the animation
+     * @param frames Pre-constructed frames
+     */
+    public Animation(int rate, MayflowerImage[] frames) {
+        this.frames = frames;
         currentFrame = 0;
         frameRate = rate;
     }

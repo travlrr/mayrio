@@ -22,12 +22,30 @@ package core.util.log;
  * The MayrioLogger follows a hierarchical system much like most mainstream logging libraries.
  * <p>
  * The levels, from finest to coarsest, are as follows:
- * ALL > DEBUG > INFO > WARN > ERROR > FATAL > NONE
+ * ALL, DEBUG, INFO, WARN, ERROR, FATAL, NONE
  */
 public enum LogLevel {
-    ALL, DEBUG, INFO, WARN, ERROR, FATAL, NONE;
+    ALL(0),
+    DEBUG(1),
+    INFO(2),
+    WARN(3),
+    ERROR(4),
+    FATAL(5),
+    NONE(6);
 
-    public String getAbbreviation() {
-        return this.name().substring(0, 1);
+    private int level;
+
+    LogLevel(int level) {
+        this.level = level;
+    }
+
+    /**
+     * Checks whether a log level is higher in the hierarchy than another level
+     *
+     * @param other Log level to check against
+     * @return Boolean result
+     */
+    boolean isAllowedAtLevel(LogLevel other) {
+        return this.level > other.level;
     }
 }

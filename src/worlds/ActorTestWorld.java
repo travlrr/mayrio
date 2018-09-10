@@ -15,13 +15,15 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package stages;
+package worlds;
 
 import mayflower.World;
 
-public class Menu extends World {
+/**
+ * Placeholder World for debugging
+ */
+public class ActorTestWorld extends World {
     @Override
     public void act() {
-
     }
 }

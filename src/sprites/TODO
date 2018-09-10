@@ -1,0 +1,9 @@
+TODO: Create spritesheets for world tiles - see tiles_ground.png
+TODO: Create spritesheets for items and interactive tiles - see tiles_general.png
+TODO: Create spritesheets for backgrounds - see tiles_bg.png
+TODO: Replace Mario's current spritesheets with some containing the correct sprites
+
+Other tiles will be added and given ingame behavior after basic functionality is out of the way.
+
+We can observe sprite usage and behavior, among other things, with an emulator and legally acquired Super Mario World ROM.
+Providing these in the project would likely not bring good things as far as the law goes (to put it lightly).
