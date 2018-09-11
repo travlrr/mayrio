@@ -39,7 +39,12 @@ import mayflower.World;
 import java.util.HashMap;
 
 public class WorldManager {
+    private static WorldManager instance;
     private static HashMap<String, World> worlds;
+
+    private WorldManager() {
+        worlds = new HashMap<>();
+    }
 
     /**
      * A static method called at the beginning of all Worlds in Mayrio to make them accessible through the WorldManager.
@@ -57,5 +62,12 @@ public class WorldManager {
      */
     public static World get(String name) {
         return worlds.get(name);
+    }
+
+    public WorldManager getInstance() {
+        if (instance == null) {
+            instance = new WorldManager();
+        }
+        return instance;
     }
 }

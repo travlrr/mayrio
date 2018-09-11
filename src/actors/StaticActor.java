@@ -31,6 +31,8 @@ public class StaticActor extends Actor {
     public StaticActor(MayflowerImage sprite, boolean enableCollision) {
         this.sprite = sprite;
         this.collides = enableCollision;
+
+        this.setImage(sprite);
     }
 
     @Override

@@ -15,21 +15,18 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core.sprites;
+package core;
 
-public enum RenderLayer {
-    FOREGROUND(3),
-    PLAYER(2),
-    WORLD(1),
-    BACKGROUND(0);
+public class WorldBuilder {
+    private static WorldBuilder instance;
 
-    private int layer;
-
-    RenderLayer(int layer) {
-        this.layer = layer;
+    private WorldBuilder() {
     }
 
-    public boolean isAbove(RenderLayer other) {
-        return this.layer > other.layer;
+    public WorldBuilder getInstance() {
+        if (instance == null) {
+            instance = new WorldBuilder();
+        }
+        return instance;
     }
 }

@@ -40,6 +40,9 @@ public class SpriteSheet {
     private String path;
     private BufferedImage sheet;
     private HashMap<Object, MayflowerImage> sprites;
+    private int scaleFactor;
+
+    // TODO: Implement sprite scaling
 
     static {
         logger = new MayrioLogger(SpriteSheet.class);
@@ -76,7 +79,7 @@ public class SpriteSheet {
             for (int c = 0; c < nColumns; c++) {
                 BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
                 BufferedImage scaled = imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * 2, spriteImage.getHeight() * 2, Image.SCALE_FAST));
-                sprites.put(cellIndex, bufferedImageToMayflowerImage(spriteImage));
+                sprites.put(cellIndex, bufferedImageToMayflowerImage(scaled));
                 cellIndex++;
             }
         }
@@ -194,8 +197,9 @@ public class SpriteSheet {
         MayflowerImage ret = new MayflowerImage(image.getWidth(), image.getHeight());
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
-                mayflower.Color currentPixel = new mayflower.Color(new java.awt.Color(image.getRGB(x, y)));
-                ret.setColorAt(x, y, currentPixel);
+                java.awt.Color color = new java.awt.Color(image.getRGB(x, y), true);
+                mayflower.Color convertedColor = new mayflower.Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+                ret.setColorAt(x, y, convertedColor);
             }
         }
         return ret;
