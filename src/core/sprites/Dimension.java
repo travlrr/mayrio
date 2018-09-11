@@ -35,7 +35,6 @@ public class Dimension {
         this.height = height;
     }
 
-
     /**
      * Checks whether this Dimension is equal to another Dimension.
      *

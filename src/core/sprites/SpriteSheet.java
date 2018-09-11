@@ -22,6 +22,7 @@ import core.util.log.MayrioLogger;
 import mayflower.MayflowerImage;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,12 +34,16 @@ import java.util.HashMap;
  * The slice tool in Adobe Photoshop
  */
 public class SpriteSheet {
-    private static final MayrioLogger logger = new MayrioLogger(SpriteSheet.class);
+    private static final MayrioLogger logger;
     private final boolean usesIntegerKeys;
     private Dimension spriteSize;
     private String path;
     private BufferedImage sheet;
     private HashMap<Object, MayflowerImage> sprites;
+
+    static {
+        logger = new MayrioLogger(SpriteSheet.class);
+    }
 
     /**
      * Constructs a new SpriteSheet, splitting the given sheet image into usable chunks by row-major order.
@@ -70,9 +75,13 @@ public class SpriteSheet {
         for (int r = 0; r < nRows; r++) {
             for (int c = 0; c < nColumns; c++) {
                 BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
+                BufferedImage scaled = imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * 2, spriteImage.getHeight() * 2, Image.SCALE_FAST));
                 sprites.put(cellIndex, bufferedImageToMayflowerImage(spriteImage));
+                cellIndex++;
             }
         }
+
+        logger.logf(LogLevel.DEBUG, "SpriteSheet from source \"%s\" constructed, %d sprites added in total", sheetPath, sprites.size());
     }
 
     /**
@@ -106,6 +115,7 @@ public class SpriteSheet {
             for (int c = 0; c < nColumns; c++) {
                 BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
                 sprites.put(names[cellIndex], bufferedImageToMayflowerImage(spriteImage));
+                cellIndex++;
             }
         }
     }
@@ -144,6 +154,26 @@ public class SpriteSheet {
             ex.printStackTrace();
             logger.log(LogLevel.ERROR, "A SpriteSheet was passed an invalid path!");
         }
+        return ret;
+    }
+
+    /**
+     * Convert an Image to a BufferedImage. Used during sprite scaling.
+     *
+     * @param source Image to convert
+     * @return Converted Image
+     */
+    private BufferedImage imageToBufferedImage(Image source) {
+        if (source instanceof BufferedImage) {
+            return (BufferedImage) source;
+        }
+
+        BufferedImage ret = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g = ret.createGraphics();
+        g.drawImage(source, 0, 0, null);
+        g.dispose();
+
         return ret;
     }
 

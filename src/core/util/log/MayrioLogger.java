@@ -24,7 +24,9 @@ import java.time.format.DateTimeFormatter;
 /**
  * Mayrio's logging framework. Provides several log levels to allow filtering of log output.
  * The current log level is shared across all instances of MayrioLogger, always defaulting to LogLevel.ERROR.
- * MayrioLogger instances SHOULD NOT be shared between classes.
+ * <p>
+ * MayrioLogger instances SHOULD NOT be shared between classes. They should, however, be shared across instances of a single
+ * class. Ideally the logger should be a 'private static final' member and be created in the static initializer of your class.
  */
 public class MayrioLogger {
     private static LogLevel level = LogLevel.ERROR;
@@ -92,18 +94,31 @@ public class MayrioLogger {
         // Get current LocalDateTime and set up date formatters
         LocalDateTime time = LocalDateTime.now();
 
+        // Get the class name of this logger's owner
+        String className = owner.toString().substring(owner.toString().lastIndexOf('.') + 1);
+
         /*
          * Log the event!
-         * Output is formatted as "[DATE, TIMESTAMP] LOGLEVEL: CALLER MESSAGE".
+         * Output is formatted as "DATE, TIME - CLASS [LOGLEVEL]: MESSAGE".
          */
         output.println(
-                String.format("[%s, %s] %s: %s %s",
+                String.format("%s, %s - %s [%s]: %s",
                         time.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
                         time.format(DateTimeFormatter.ofPattern("HH:mm:ss")),
+                        className,
                         level.name(),
-                        owner.getClass().getName(),
                         o.toString()
                 )
         );
+    }
+
+    /**
+     * Log an event and format the message.
+     *
+     * @param level   The log level to log the message at. This CANNOT be LogLevel.ALL or LogLevel.NONE!
+     * @param message The message to format and log.
+     */
+    public void logf(LogLevel level, String message, Object... args) {
+        this.log(level, String.format(message, args));
     }
 }

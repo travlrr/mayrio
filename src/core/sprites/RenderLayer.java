@@ -15,27 +15,20 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.core;
+package core.sprites;
 
-// TODO: Finish AnimatedActor
+public enum RenderLayer {
+    FOREGROUND(2),
+    WORLD(1),
+    BACKGROUND(0);
 
-/**
- * AnimatedActor is a further extension of MayrioActor that adds animation capabilities.
- */
-public class AnimatedActor extends MayrioActor {
-    private AnimationSet animations;
-    private Animation currentAnimation;
+    private int layer;
 
-    @Override
-    public void act() {
-
+    RenderLayer(int layer) {
+        this.layer = layer;
     }
 
-    public AnimationSet getAnimations() {
-        return this.animations;
-    }
-
-    public void setAnimation(String name) {
-        this.currentAnimation = animations.getAnimation(name);
+    public boolean isAbove(RenderLayer other) {
+        return this.layer > other.layer;
     }
 }

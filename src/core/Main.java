@@ -20,20 +20,28 @@ package core;
 import actors.StaticActor;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
+import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.MayflowerImage;
 
 public class Main {
-    private static final MayrioLogger logger = new MayrioLogger(Main.class);
+    private static final MayrioLogger logger;
+
+    static {
+        logger = new MayrioLogger(Main.class);
+    }
 
     public static void main(String[] args) {
         /*
          * TODO: Figure out how to initialize a Mayflower window
-         * Mayflower 3 introduces a lot of changes from Mayflower 1 and 2 and the
-         * documentation isn't available online, so we'll figure this out later
+         * Mayflower 3 introduces a lot of changes from Mayflower 1 and 2, and the
+         * documentation isn't currently available online, so we'll figure this out later.
+         * I'll provide online hosting for it as soon as I have access to the files.
          */
 
         // Test code for SpriteSheet
+
+        MayrioLogger.setLevel(LogLevel.ALL);
         SpriteSheet sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/mario_large.png");
         MayflowerImage testSprite = sheet.getSprite(1);
         StaticActor testActor = new StaticActor(testSprite, false);

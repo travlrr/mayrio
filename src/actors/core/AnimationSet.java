@@ -25,8 +25,12 @@ import java.util.HashMap;
  * The AnimationSet class provides an easy way to group and name Animations.
  */
 public class AnimationSet {
-    private static final MayrioLogger logger = new MayrioLogger(AnimationSet.class);
+    private static final MayrioLogger logger;
     private HashMap<String, Animation> animations;
+
+    static {
+        logger = new MayrioLogger(AnimationSet.class);
+    }
 
     /**
      * Constructs a new AnimationSet.
