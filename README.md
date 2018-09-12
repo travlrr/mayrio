@@ -4,6 +4,7 @@
 Project #1 for Computer Science III.
 
 Mayrio is a semi-clone of Super Mario World built with Justin May's <b>Mayflower</b> framework.
+The documentation for Mayflower can be found [here](http://mayflower.docs.ga/).
 
 [gpl]: https://www.gnu.org/graphics/gplv3-88x31.png
 [ ![gpl][] ](https://www.gnu.org/licenses/licenses.html#GPL)
