@@ -17,25 +17,20 @@
 
 package actors.core;
 
-// TODO: Finish AnimatedActor
+public class Coordinate {
+    private int x;
+    private int y;
 
-/**
- * AnimatedActor is a further extension of MayrioActor that adds animation capabilities.
- */
-public class AnimatedActor extends MayrioActor {
-    private AnimationSet animations;
-    private Animation currentAnimation;
-
-    @Override
-    public void act() {
-        super.act();
+    public Coordinate(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public AnimationSet getAnimations() {
-        return this.animations;
+    public int getX() {
+        return x;
     }
 
-    public void setAnimation(String name) {
-        this.currentAnimation = animations.getAnimation(name);
+    public int getY() {
+        return y;
     }
 }

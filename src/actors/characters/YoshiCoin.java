@@ -15,27 +15,9 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.core;
+package actors.characters;
 
-// TODO: Finish AnimatedActor
+import actors.core.MayrioActor;
 
-/**
- * AnimatedActor is a further extension of MayrioActor that adds animation capabilities.
- */
-public class AnimatedActor extends MayrioActor {
-    private AnimationSet animations;
-    private Animation currentAnimation;
-
-    @Override
-    public void act() {
-        super.act();
-    }
-
-    public AnimationSet getAnimations() {
-        return this.animations;
-    }
-
-    public void setAnimation(String name) {
-        this.currentAnimation = animations.getAnimation(name);
-    }
+public class YoshiCoin extends MayrioActor {
 }

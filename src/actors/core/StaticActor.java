@@ -32,44 +32,31 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core;
+package actors.core;
 
-import actors.core.StaticActor;
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
-import core.util.log.LogLevel;
-import core.util.log.MayrioLogger;
-import mayflower.Mayflower;
+import mayflower.Actor;
 import mayflower.MayflowerImage;
-import worlds.ActorTestWorld;
 
-public class Main extends Mayflower {
-    private static final MayrioLogger logger;
+/**
+ * StaticActors are a simple extension of the Actor class that do not move.
+ * These are ideal for ground tiles, backgrounds, and the like.
+ */
+public class StaticActor extends Actor {
+    private MayflowerImage sprite;
+    private boolean collides;
 
-    static {
-        logger = new MayrioLogger(Main.class);
-    }
+    public StaticActor(MayflowerImage sprite, boolean enableCollision) {
+        this.sprite = sprite;
+        this.collides = enableCollision;
 
-    private Main() {
-        super("Mayrio", 512, 448);
+        this.setImage(sprite);
     }
 
     @Override
-    public void init() {
-        // Test code for SpriteSheet
-
-        ActorTestWorld world = new ActorTestWorld();
-        MayrioLogger.setLevel(LogLevel.ALL);
-
-        SpriteSheet sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/mario_large.png", 2);
-        MayflowerImage testSprite = sheet.getSprite(1);
-        StaticActor testActor = new StaticActor(testSprite, false);
-
-        Mayflower.setWorld(world);
-        world.addObject(testActor, 16, 16);
+    public void act() {
     }
 
-    public static void main(String[] args) {
-        new Main();
+    public boolean collides() {
+        return collides;
     }
 }

@@ -17,6 +17,7 @@
 
 package actors.core;
 
+import actors.characters.Ground;
 import core.sprites.RenderLayer;
 import mayflower.Actor;
 
@@ -29,6 +30,11 @@ import java.util.ArrayList;
 public class MayrioActor extends Actor {
     private RenderLayer layer;
     private ArrayList<MayrioActor> touching;
+    private int maxMoveSpeed;
+    private int currentMoveSpeed;
+    private int maxVerticalSpeed;
+    private int currentVerticalSpeed;
+    private boolean grounded;
 
     @Override
     public void act() {
@@ -36,17 +42,76 @@ public class MayrioActor extends Actor {
         touching = null;
         touching = new ArrayList<>(this.getIntersectingObjects(MayrioActor.class));
 
+        // Layering
         for (MayrioActor other : touching) {
             if (this.layer.isAbove(other.layer)) {
                 // TODO: Figure out how to control object render order
                 return;
             }
+        }
 
-            // TODO: Force other actor to move away when collision occurs
+        /*
+         * Physics
+         */
+        for (Actor other : touching) {
+            // Set grounded
+            if (other instanceof Ground) {
+                Ground ground = (Ground) other;
+                if (this.getEdge(Direction.DOWN).getY() == ground.getEdge(Direction.UP).getY()) {
+                    grounded = true;
+                }
+            }
+
+            // TODO: Move away when collision occurs
+            if (other instanceof MayrioActor) {
+                MayrioActor actor = (MayrioActor) other;
+            } else if (other instanceof StaticActor) {
+                StaticActor actor = (StaticActor) other;
+                if (!actor.collides()) {
+                    return;
+                }
+
+            }
+        }
+
+        // Decrease vertical speed if in air
+        if (!grounded) {
+            this.currentVerticalSpeed -= 1;
+        } else {
+            this.currentVerticalSpeed = 0;
         }
     }
 
     void setLayer(RenderLayer layer) {
         this.layer = layer;
+    }
+
+    public void move(int distance, Direction direction) {
+        this.setRotation(direction.getAngle());
+        super.move(distance);
+    }
+
+    public void jump() {
+        this.currentVerticalSpeed = maxVerticalSpeed;
+    }
+
+    public Coordinate getEdge(Direction direction) {
+        int x = this.getCenterX();
+        int y = this.getCenterY();
+        int w = this.getImage().getWidth();
+        int h = this.getImage().getHeight();
+
+        switch (direction) {
+            case UP:
+                return new Coordinate(x, y - (h / 2));
+            case RIGHT:
+                return new Coordinate(x + (w / 2), y);
+            case DOWN:
+                return new Coordinate(x, y + (h / 2));
+            case LEFT:
+                return new Coordinate(x - (w / 2), y);
+        }
+
+        return null;
     }
 }

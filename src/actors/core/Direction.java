@@ -17,25 +17,19 @@
 
 package actors.core;
 
-// TODO: Finish AnimatedActor
+public enum Direction {
+    UP(0),
+    RIGHT(90),
+    DOWN(180),
+    LEFT(270);
 
-/**
- * AnimatedActor is a further extension of MayrioActor that adds animation capabilities.
- */
-public class AnimatedActor extends MayrioActor {
-    private AnimationSet animations;
-    private Animation currentAnimation;
+    private int angle;
 
-    @Override
-    public void act() {
-        super.act();
+    Direction(int angle) {
+        this.angle = angle;
     }
 
-    public AnimationSet getAnimations() {
-        return this.animations;
-    }
-
-    public void setAnimation(String name) {
-        this.currentAnimation = animations.getAnimation(name);
+    public int getAngle() {
+        return this.angle;
     }
 }
