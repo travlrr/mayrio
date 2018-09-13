@@ -38,7 +38,7 @@ import mayflower.World;
 
 import java.util.HashMap;
 
-public class WorldManager {
+public class  WorldManager {
     private static WorldManager instance;
     private static HashMap<String, World> worlds;
 

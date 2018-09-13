@@ -36,14 +36,36 @@ package actors.characters;
 
 import actors.core.AnimatedActor;
 import actors.core.AnimationSet;
+import mayflower.Keyboard;
+import mayflower.Mayflower;
+
 
 // TODO: Add basic game behavior to Player
 public class Player extends AnimatedActor {
-    AnimationSet animations;
+    private AnimationSet animations;
 
     public Player() {
         //SpriteSheet small = new SpriteSheet();
 
         //Animation walk_sm =
     }
+
+    @Override
+    public void act() {
+        super.act();
+        if(Mayflower.isKeyPressed(Keyboard.KEY_RIGHT)){
+            this.setAnimation("walkRight");
+            this.move(5);
+        }
+        if(Mayflower.isKeyPressed(Keyboard.KEY_LEFT)){
+            this.setAnimation("walkLeft");
+            this.move(-5);
+        }
+        if(Mayflower.isKeyPressed(Keyboard.KEY_UP)){
+            this.setAnimation("jump");
+            super.jump();
+        }
+
+    }
+
 }

@@ -45,6 +45,7 @@ import worlds.ActorTestWorld;
 
 public class Main extends Mayflower {
     private static final MayrioLogger logger;
+    private static Main instance;
 
     static {
         logger = new MayrioLogger(Main.class);
@@ -70,6 +71,6 @@ public class Main extends Mayflower {
     }
 
     public static void main(String[] args) {
-        new Main();
+        Main.instance = new Main();
     }
 }
