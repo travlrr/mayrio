@@ -15,6 +15,23 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/*
+ * This file is part of mayrio.
+ *
+ * mayrio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * mayrio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package core.sprites;
 
 import core.util.log.LogLevel;
@@ -25,6 +42,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -35,11 +53,10 @@ import java.util.HashMap;
  */
 public class SpriteSheet {
     private static final MayrioLogger logger;
-    private final boolean usesIntegerKeys;
     private Dimension spriteSize;
     private String path;
     private BufferedImage sheet;
-    private HashMap<Object, MayflowerImage> sprites;
+    private ArrayList<MayflowerImage> sprites;
     private int scaleFactor;
 
     // TODO: Implement sprite scaling
@@ -50,7 +67,7 @@ public class SpriteSheet {
 
     /**
      * Constructs a new SpriteSheet, splitting the given sheet image into usable chunks by row-major order.
-     * The SpriteSheet uses integer indexes when names are not provided.
+     * Sprite scale defaults to 1:1.
      *
      * @param spriteSize Size of each sprite (width x height)
      * @param sheetPath  The full path relative to the project root for the sprite sheet image.
@@ -58,8 +75,8 @@ public class SpriteSheet {
     public SpriteSheet(Dimension spriteSize, String sheetPath) {
         this.path = sheetPath;
         this.spriteSize = spriteSize;
-        this.usesIntegerKeys = true;
-        this.sprites = new HashMap<>();
+        this.sprites = new ArrayList<>();
+        this.scaleFactor = 1;
 
         // Fetch the BufferedImage at the given path
         this.sheet = getImage(sheetPath);
@@ -74,31 +91,30 @@ public class SpriteSheet {
         int nRows = sheet.getHeight() / spriteSize.getHeight();
 
         // Populate sprites
-        int cellIndex = 1;
+        int cellIndex = 0;
         for (int r = 0; r < nRows; r++) {
             for (int c = 0; c < nColumns; c++) {
                 BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
-                BufferedImage scaled = imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * 2, spriteImage.getHeight() * 2, Image.SCALE_FAST));
-                sprites.put(cellIndex, bufferedImageToMayflowerImage(scaled));
+                sprites.add(cellIndex, bufferedImageToMayflowerImage(spriteImage));
                 cellIndex++;
             }
         }
 
-        logger.logf(LogLevel.DEBUG, "SpriteSheet from source \"%s\" constructed, %d sprites added in total", sheetPath, sprites.size());
+        logger.logf(LogLevel.DEBUG, "SpriteSheet from source \"%s\" constructed, %dx%d, %d sprites added in total", sheetPath, sprites.size(), spriteSize.getWidth(), spriteSize.getHeight());
     }
 
     /**
      * Constructs a new SpriteSheet, splitting the given sheet image into usable chunks by row-major order.
+     * Providing a scale argument
      *
      * @param spriteSize Size of each sprite (width x height)
      * @param sheetPath  The full path relative to the project root for the sprite sheet image.
-     * @param names      Names for each sprite.
      */
-    public SpriteSheet(Dimension spriteSize, String sheetPath, String[] names) {
+    public SpriteSheet(Dimension spriteSize, String sheetPath, int scale) {
         this.path = sheetPath;
         this.spriteSize = spriteSize;
-        this.usesIntegerKeys = false;
-        this.sprites = new HashMap<>();
+        this.sprites = new ArrayList<>();
+        this.scaleFactor = scale;
 
         // Fetch the BufferedImage at the given path
         this.sheet = getImage(sheetPath);
@@ -113,34 +129,41 @@ public class SpriteSheet {
         int nRows = sheet.getHeight() / spriteSize.getHeight();
 
         // Populate sprites
-        int cellIndex = 1;
+        int cellIndex = 0;
         for (int r = 0; r < nRows; r++) {
             for (int c = 0; c < nColumns; c++) {
                 BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
-                sprites.put(names[cellIndex], bufferedImageToMayflowerImage(spriteImage));
+                BufferedImage scaled = imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * scaleFactor, spriteImage.getHeight() * scaleFactor, Image.SCALE_FAST));
+                sprites.add(cellIndex, bufferedImageToMayflowerImage(scaled));
                 cellIndex++;
             }
         }
+
+        logger.logf(LogLevel.DEBUG, "SpriteSheet from source \"%s\" constructed, %dx%d, %d sprites added in total", sheetPath, sprites.size(), sprites.get(0).getWidth(), sprites.get(0).getHeight());
     }
 
     /**
-     * Returns whether or not this sheet has a sprite paired with the given key
+     * Get a sprite from the sprite sheet
      *
-     * @param key Key to check
-     * @return Boolean result
+     * @param index Index to get sprite from
+     * @return Sprite at the given index
      */
-    public boolean hasSprite(Object key) {
-        return sprites.containsKey(key) && sprites.get(key) != null;
+    public MayflowerImage getSprite(int index) {
+        return sprites.get(index);
     }
 
     /**
-     * Returns the sprite paired with the given key
+     * Get multiple sprites from the sprite sheet
      *
-     * @param key Key to get sprite from
-     * @return Sprite at the given key
+     * @param indexes Indexes to get sprites from
+     * @return Sprites at the given indexes
      */
-    public MayflowerImage getSprite(Object key) {
-        return sprites.get(key);
+    public MayflowerImage[] getSprites(int... indexes) {
+        MayflowerImage[] ret = new MayflowerImage[indexes.length];
+        for(int i = 0; i < indexes.length; i++) {
+            ret[i] = sprites.get(i);
+        }
+        return ret;
     }
 
     /**
@@ -178,10 +201,6 @@ public class SpriteSheet {
         g.dispose();
 
         return ret;
-    }
-
-    public boolean usesIntegerKeys() {
-        return this.usesIntegerKeys;
     }
 
     /**

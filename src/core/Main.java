@@ -15,6 +15,23 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/*
+ * This file is part of mayrio.
+ *
+ * mayrio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * mayrio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package core;
 
 import actors.StaticActor;
@@ -26,31 +43,33 @@ import mayflower.Mayflower;
 import mayflower.MayflowerImage;
 import worlds.ActorTestWorld;
 
-public class Main {
+public class Main extends Mayflower {
     private static final MayrioLogger logger;
 
     static {
         logger = new MayrioLogger(Main.class);
     }
 
-    public static void main(String[] args) {
+    private Main() {
+        super("Mayrio", 512, 448);
+    }
+
+    @Override
+    public void init() {
         // Test code for SpriteSheet
 
         ActorTestWorld world = new ActorTestWorld();
         MayrioLogger.setLevel(LogLevel.ALL);
 
-        SpriteSheet sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/mario_large.png");
+        SpriteSheet sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/mario_large.png", 2);
         MayflowerImage testSprite = sheet.getSprite(1);
         StaticActor testActor = new StaticActor(testSprite, false);
 
-        Mayflower mayflower = new Mayflower("test", 640, 480) {
-            @Override
-            public void init() {
-
-            }
-        };
-
-        mayflower._setWorld(world);
+        Mayflower.setWorld(world);
         world.addObject(testActor, 16, 16);
+    }
+
+    public static void main(String[] args) {
+        new Main();
     }
 }
