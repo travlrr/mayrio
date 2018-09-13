@@ -32,13 +32,14 @@ public class MayrioActor extends Actor {
 
     @Override
     public void act() {
-        // We set touching to null to be 100% the old ArrayList gets caught by the GC
+        // We set touching to null to be 100% sure the old ArrayList gets caught by the GC
         touching = null;
         touching = new ArrayList<>(this.getIntersectingObjects(MayrioActor.class));
 
         for (MayrioActor other : touching) {
             if (this.layer.isAbove(other.layer)) {
                 // TODO: Figure out how to control object render order
+                return;
             }
 
             // TODO: Force other actor to move away when collision occurs
