@@ -15,23 +15,6 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * This file is part of mayrio.
- *
- * mayrio is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * mayrio is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package core.sprites;
 
 import core.util.log.LogLevel;
@@ -43,7 +26,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * The SpriteSheet class represents a full sprite sheet image, and provides functionality for fetching sprites from the sheet.
@@ -53,11 +35,11 @@ import java.util.HashMap;
  */
 public class SpriteSheet {
     private static final MayrioLogger logger;
+    private static int scaleFactor;
     private Dimension spriteSize;
     private String path;
     private BufferedImage sheet;
     private ArrayList<MayflowerImage> sprites;
-    private int scaleFactor;
 
     // TODO: Implement sprite scaling
 
@@ -76,7 +58,6 @@ public class SpriteSheet {
         this.path = sheetPath;
         this.spriteSize = spriteSize;
         this.sprites = new ArrayList<>();
-        this.scaleFactor = 1;
 
         // Fetch the BufferedImage at the given path
         this.sheet = getImage(sheetPath);
@@ -95,6 +76,9 @@ public class SpriteSheet {
         for (int r = 0; r < nRows; r++) {
             for (int c = 0; c < nColumns; c++) {
                 BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
+                if (scaleFactor != 1) {
+                    spriteImage = imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * SpriteSheet.scaleFactor, spriteImage.getHeight() * SpriteSheet.scaleFactor, Image.SCALE_FAST));
+                }
                 sprites.add(cellIndex, bufferedImageToMayflowerImage(spriteImage));
                 cellIndex++;
             }
@@ -104,42 +88,11 @@ public class SpriteSheet {
     }
 
     /**
-     * Constructs a new SpriteSheet, splitting the given sheet image into usable chunks by row-major order.
-     * Providing a scale argument
-     *
-     * @param spriteSize Size of each sprite (width x height)
-     * @param sheetPath  The full path relative to the project root for the sprite sheet image.
+     * Sets the scaling factor of all new spritesheets
+     * @param scale Scale multiplier
      */
-    public SpriteSheet(Dimension spriteSize, String sheetPath, int scale) {
-        this.path = sheetPath;
-        this.spriteSize = spriteSize;
-        this.sprites = new ArrayList<>();
-        this.scaleFactor = scale;
-
-        // Fetch the BufferedImage at the given path
-        this.sheet = getImage(sheetPath);
-
-        // Make sure the spriteSize is valid, if not then throw an Exception
-        if (sheet.getWidth() % spriteSize.getWidth() != 0 | sheet.getHeight() % spriteSize.getHeight() != 0) {
-            throw new InvalidSpriteSizeException("Invalid tile size when constructing SpriteSheet for " + sheetPath);
-        }
-
-        // Get the number of sprites in the sheet
-        int nColumns = sheet.getWidth() / spriteSize.getWidth();
-        int nRows = sheet.getHeight() / spriteSize.getHeight();
-
-        // Populate sprites
-        int cellIndex = 0;
-        for (int r = 0; r < nRows; r++) {
-            for (int c = 0; c < nColumns; c++) {
-                BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
-                BufferedImage scaled = imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * scaleFactor, spriteImage.getHeight() * scaleFactor, Image.SCALE_FAST));
-                sprites.add(cellIndex, bufferedImageToMayflowerImage(scaled));
-                cellIndex++;
-            }
-        }
-
-        logger.logf(LogLevel.DEBUG, "SpriteSheet from source \"%s\" constructed, %dx%d, %d sprites added in total", sheetPath, sprites.size(), sprites.get(0).getWidth(), sprites.get(0).getHeight());
+    public static void setScale(int scale) {
+        SpriteSheet.scaleFactor = scale;
     }
 
     /**

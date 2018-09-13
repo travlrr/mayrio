@@ -15,35 +15,18 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * This file is part of mayrio.
- *
- * mayrio is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * mayrio is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package actors.characters;
 
 import actors.core.AnimatedActor;
-import actors.core.AnimationSet;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 
 // TODO: Add basic game behavior to Player
 public class Player extends AnimatedActor {
-    AnimationSet animations;
+    boolean shroomed;
 
     public Player() {
-        //SpriteSheet small = new SpriteSheet();
-
-        //Animation walk_sm =
+        SpriteSheet mario_small = new SpriteSheet(new Dimension(16, 24), "/sprites/mario_small.png");
+        SpriteSheet mario_large = new SpriteSheet(new Dimension(16, 32), "/sprites/mario_large.png");
     }
 }
