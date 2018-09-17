@@ -19,7 +19,7 @@ package actors.core;
 
 import actors.characters.Ground;
 
-import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,8 +34,7 @@ public class PhysActor extends MayrioActor {
     private boolean grounded;
     private boolean gravity;
 
-    public PhysActor() {
-        this.grounded = false;
+    protected PhysActor() {
         this.maxSpeedX = 1;
         this.maxSpeedY = 1;
         this.gravity = true;
@@ -44,27 +43,29 @@ public class PhysActor extends MayrioActor {
 
     @Override
     public void act() {
-        // We set touching to null to be 100% sure the old ArrayList gets caught by the GC
+        super.act();
+
+        // Get all objects in the current world
         List<MayrioActor> objects = this.getWorld().getObjects(MayrioActor.class);
+        List<Ground> nearbyGround = new ArrayList<>();
 
-        /*
-         * Physics
-         */
-        if (objects.size() == 0) {
-            grounded = false;
-        }
-
+        // Physics
         for (MayrioActor other : objects) {
             // Handle collisions
-            if (this.intersects(other)) {
+            if (this.intersects(other) && other.collides() && this.collides()) {
                 collide(other);
+                if (other instanceof Ground) {
+                    nearbyGround.add((Ground) other);
+                }
             }
         }
 
         // Decrease vertical speed if in air
-        if (!grounded) {
+        if (nearbyGround.size() == 0) {
+            grounded = false;
             this.speedY -= 0.5;
         } else {
+            grounded = true;
             if (speedY < 0) {
                 speedY = 0;
             }
@@ -82,27 +83,17 @@ public class PhysActor extends MayrioActor {
     }
 
     private void collide(MayrioActor other) {
-        if (!other.collides() || !this.collides()) {
-            return;
-        }
-
-        if (other instanceof Ground) {
-            grounded = true;
-        }
-
         this.turnTowards(other);
         this.turn(180);
-        Rectangle2D mB = this.getBounds().getBounds2D();
-        Rectangle2D oB = other.getBounds().getBounds2D();
 
-        double left1 = mB.getX();
-        double left2 = oB.getX();
-        double right1 = left1 + mB.getWidth();
-        double right2 = left2 + oB.getWidth();
-        double top1 = mB.getY();
-        double top2 = oB.getY();
-        double bottom1 = top1 + mB.getHeight();
-        double bottom2 = top2 + oB.getHeight();
+        double left1 = this.getEdge(Direction.LEFT).dx();
+        double left2 = other.getEdge(Direction.LEFT).dx();
+        double right1 = this.getEdge(Direction.RIGHT).dx();
+        double right2 = other.getEdge(Direction.RIGHT).dx();
+        double top1 = this.getEdge(Direction.UP).dy();
+        double top2 = other.getEdge(Direction.UP).dy();
+        double bottom1 = this.getEdge(Direction.DOWN).dy();
+        double bottom2 = other.getEdge(Direction.DOWN).dy();
 
         double overlap_x = Math.max(0, Math.min(right1, right2) - Math.max(left1, left2));
         double overlap_y = Math.max(0, Math.min(bottom1, bottom2) - Math.max(top1, top2));
@@ -111,11 +102,15 @@ public class PhysActor extends MayrioActor {
             overlap_x = 0;
         }
 
-        if (Math.abs(overlap_y - oB.getHeight()) < 2) {
+        if (Math.abs(overlap_y - other.getImage().getHeight()) < 2) {
             overlap_y = 0;
         }
 
         this.setLocation(getX() - overlap_x, getY() - overlap_y);
+
+        double x = this.getCenterX() - 16;
+        //double y = this.getCenterY() - 16 + this.getImage().getHeight()/2;
+        double y = this.getEdge(Direction.DOWN).dy() - 16;
     }
 
     /**
@@ -166,10 +161,6 @@ public class PhysActor extends MayrioActor {
 
     protected double getSpeedY() {
         return speedY;
-    }
-
-    public void setSpeedY(double speedY) {
-        this.speedY = speedY;
     }
 
     protected void setMaxSpeedY(int speed) {

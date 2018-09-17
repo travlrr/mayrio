@@ -50,8 +50,6 @@ public class Main extends Mayflower {
 
     @Override
     public void init() {
-        // Test code for SpriteSheet
-
         int width = Mayflower.getWidth();
         int height = Mayflower.getHeight();
         int cellSize = 32;
@@ -67,10 +65,10 @@ public class Main extends Mayflower {
         MayrioLogger.setLevel(LogLevel.ALL);
 
         Mayflower.setWorld(world);
-        Mayflower.showBounds(true);
-        Mayflower.showFPS(true);
+        Mayflower.showBounds(false);
+        Mayflower.showFPS(false);
 
-        Coordinate pos = grid.gridToScreen(6, 8);
+        Coordinate pos = grid.gridToScreen(4, 8);
         Coordinate gpos = grid.gridToScreen(8, 10);
         Coordinate cpos = grid.gridToScreen(8, 8);
         world.addObject(player, pos.x(), pos.y());

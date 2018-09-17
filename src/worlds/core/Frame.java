@@ -15,9 +15,23 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.characters;
+package worlds.core;
 
-import actors.core.PhysActor;
+import mayflower.World;
 
-public class Brick extends PhysActor {
+public abstract class Frame extends World {
+    private FramedWorld parent;
+
+    @Override
+    public abstract void act();
+
+    protected abstract void init();
+
+    public FramedWorld getParent() {
+        return parent;
+    }
+
+    void setParent(FramedWorld parent) {
+        this.parent = parent;
+    }
 }

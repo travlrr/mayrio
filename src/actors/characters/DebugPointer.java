@@ -17,19 +17,33 @@
 
 package actors.characters;
 
-import actors.core.GroundType;
+import actors.core.Coordinate;
 import actors.core.StaticActor;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
-public class Ground extends StaticActor {
+/**
+ * A small circle used to visualize coordinates for debugging
+ */
+public class DebugPointer extends StaticActor {
     private static SpriteSheet sheet;
 
     static {
-        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
+        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/debugpointers.png");
     }
 
-    public Ground(GroundType type) {
-        super(sheet.getSprite(type.getValue()), true);
+    private int size;
+
+    public DebugPointer(int size) {
+        super(sheet.getSprite(size), false);
+        this.size = size;
+    }
+
+    public void setPosition(double x, double y) {
+        this.setLocation(x, y);
+    }
+
+    public void setPosition(Coordinate pos) {
+        this.setLocation(pos.dx(), pos.dy());
     }
 }

@@ -26,11 +26,11 @@ public class Timer {
     private int goal;
 
     /**
-     * Create a new AnimationTimer.
-     * Framerate defaults to 1 fps.
+     * Create a new Timer.
+     * Goal defaults to 0.
      */
     public Timer() {
-        this.goal = 1000;
+        this.goal = 0;
         this.reset();
     }
 

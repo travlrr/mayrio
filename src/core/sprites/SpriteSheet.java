@@ -46,7 +46,6 @@ public class SpriteSheet {
     private String path;
     private BufferedImage sheet;
 
-    // TODO: Implement sprite scaling
     private ArrayList<MayflowerImage> sprites;
 
     /**

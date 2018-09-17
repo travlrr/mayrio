@@ -18,9 +18,12 @@
 package worlds;
 
 import actors.characters.Player;
-import core.WorldBuilder;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 import mayflower.Label;
+import mayflower.MayflowerImage;
 import mayflower.World;
+import worlds.core.WorldBuilder;
 
 /**
  * Placeholder World for debugging
@@ -42,8 +45,13 @@ public class ActorTestWorld extends World {
     public void init() {
         WorldBuilder.setWorld(instance);
         WorldBuilder.createFlatGround();
+
         points = new Label("Points: 0", 24);
         instance.addObject(points, 128, 128);
+
+        SpriteSheet background = new SpriteSheet(new Dimension(512, 432), "/sprites/background.png");
+        MayflowerImage a = background.getSprite(0);
+        this.setBackground(background.getSprite(0));
     }
 
     @Override
