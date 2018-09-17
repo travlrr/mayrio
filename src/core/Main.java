@@ -22,7 +22,6 @@ import actors.characters.Ground;
 import actors.characters.Player;
 import actors.core.Coordinate;
 import actors.core.GroundType;
-import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Mayflower;
@@ -56,7 +55,6 @@ public class Main extends Mayflower {
 
         grid = Grid.getInstance(width, height, cellSize);
 
-        SpriteSheet.setScale(2);
         Player player = Player.get();
         Ground ground = new Ground(GroundType.MIDDLE);
         Coin coin = new Coin();

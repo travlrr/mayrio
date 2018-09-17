@@ -19,6 +19,7 @@ package worlds.core;
 
 import actors.characters.Player;
 import actors.core.Direction;
+import mayflower.Mayflower;
 import mayflower.World;
 
 import java.util.ArrayList;
@@ -51,10 +52,15 @@ public class FramedWorld extends World {
     }
 
     public void nextFrame() {
-
+        currentFrame++;
+        Mayflower.setWorld(frames.get(currentFrame));
     }
 
     public void previousFrame() {
-
+        currentFrame--;
+        if (currentFrame < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        Mayflower.setWorld(frames.get(currentFrame));
     }
 }

@@ -127,7 +127,7 @@ public class Player extends AnimatedActor {
         }
 
         // Die if below world
-        if (this.getX() > this.getWorld().getHeight()) {
+        if (this.getY() > this.getWorld().getHeight()) {
             this.kill();
         }
 
@@ -140,17 +140,20 @@ public class Player extends AnimatedActor {
         }
 
         // Movement and animation
-        if (Mayflower.isKeyDown(Keyboard.KEY_UP) || Mayflower.isKeyDown(Keyboard.KEY_W) ) {
+        if (Mayflower.isKeyDown(Keyboard.KEY_UP)) {
             jump();
         }
 
+        // Jump animations
         if (!isGrounded()) {
             if (getSpeedY() > 0) {
                 this.setAnimation(facing == Direction.LEFT ? "jumpLeft" : "jumpRight");
             } else if (getSpeedY() < -1) {
                 this.setAnimation(facing == Direction.LEFT ? "fallLeft" : "fallRight");
             }
-        } else if (Mayflower.isKeyDown(Keyboard.KEY_RIGHT) || Mayflower.isKeyDown(Keyboard.KEY_D)) {
+        }
+
+        if (Mayflower.isKeyDown(Keyboard.KEY_RIGHT)) {
             if (isGrounded()) {
                 this.setAnimation("walkRight");
             }
@@ -159,7 +162,7 @@ public class Player extends AnimatedActor {
             }
             this.facing = Direction.RIGHT;
             accel();
-        } else if (Mayflower.isKeyDown(Keyboard.KEY_LEFT) || Mayflower.isKeyDown(Keyboard.KEY_A)) {
+        } else if (Mayflower.isKeyDown(Keyboard.KEY_LEFT)) {
             if (isGrounded()) {
                 this.setAnimation("walkLeft");
             }
@@ -168,7 +171,7 @@ public class Player extends AnimatedActor {
             }
             this.facing = Direction.LEFT;
             accel();
-        } else if (Mayflower.isKeyDown(Keyboard.KEY_DOWN) || Mayflower.isKeyDown(Keyboard.KEY_S)) {
+        } else if (Mayflower.isKeyDown(Keyboard.KEY_DOWN)) {
             this.slow();
             if (facing.equals(Direction.LEFT)) {
                 this.setAnimation("crouchLeft");
@@ -193,12 +196,14 @@ public class Player extends AnimatedActor {
      * Called when switching directions. Spawns a Dust object and sets speed to 1/4.
      */
     private void turn() {
-        Dust dust = new Dust();
+        if (isGrounded()) {
+            Dust dust = new Dust();
+            int x = this.getX() + this.getImage().getWidth() / 2;
+            int y = this.getY() + this.getImage().getHeight();
 
-        int x = this.getX() + this.getImage().getWidth() / 2;
-        int y = this.getY() + this.getImage().getHeight();
+            this.getWorld().addObject(dust, x - 4, y - 4);
+        }
 
-        this.getWorld().addObject(dust, x - 4, y - 4);
         this.setSpeedX(getSpeedX() / 4);
     }
 

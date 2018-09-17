@@ -40,6 +40,7 @@ public class SpriteSheet {
 
     static {
         logger = new MayrioLogger(SpriteSheet.class);
+        scaleFactor = 2;
     }
 
     private Dimension spriteSize;
