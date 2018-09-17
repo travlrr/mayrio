@@ -15,21 +15,21 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core.sprites;
+package actors.characters;
 
-public enum RenderLayer {
-    FOREGROUND(3),
-    PLAYER(2),
-    WORLD(1),
-    BACKGROUND(0);
+import actors.core.GroundType;
+import actors.core.StaticActor;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 
-    private int layer;
+public class Ground extends StaticActor {
+    private static SpriteSheet sheet;
 
-    RenderLayer(int layer) {
-        this.layer = layer;
+    static {
+        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
     }
 
-    public boolean isAbove(RenderLayer other) {
-        return this.layer > other.layer;
+    public Ground(GroundType type) {
+        super(sheet.getSprite(type.getValue()), true);
     }
 }

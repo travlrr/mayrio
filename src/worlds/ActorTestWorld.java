@@ -17,13 +17,46 @@
 
 package worlds;
 
+import actors.characters.Player;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
+import mayflower.Label;
+import mayflower.MayflowerImage;
 import mayflower.World;
+import worlds.core.WorldBuilder;
 
 /**
  * Placeholder World for debugging
  */
 public class ActorTestWorld extends World {
+    private static ActorTestWorld instance;
+    private Label points;
+
+    private ActorTestWorld() {
+    }
+
+    public static ActorTestWorld get() {
+        if (instance == null) {
+            instance = new ActorTestWorld();
+        }
+        return instance;
+    }
+
+    public void init() {
+        WorldBuilder.setWorld(instance);
+        WorldBuilder.createFlatGround();
+
+        points = new Label("Points: 0", 24);
+        instance.addObject(points, 128, 128);
+
+        SpriteSheet background = new SpriteSheet(new Dimension(512, 432), "/sprites/background.png");
+        MayflowerImage a = background.getSprite(0);
+        this.setBackground(background.getSprite(0));
+    }
+
     @Override
     public void act() {
+        Player ply = this.getObjects(Player.class).get(0);
+        points.setText(String.format("Points: %d", ply.getPoints()));
     }
 }

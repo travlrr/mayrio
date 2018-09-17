@@ -20,17 +20,19 @@ package actors.core;
 import core.util.log.MayrioLogger;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * The AnimationSet class provides an easy way to group and name Animations.
  */
 public class AnimationSet {
     private static final MayrioLogger logger;
-    private HashMap<String, Animation> animations;
 
     static {
         logger = new MayrioLogger(AnimationSet.class);
     }
+
+    private HashMap<String, Animation> animations;
 
     /**
      * Constructs a new AnimationSet.
@@ -40,9 +42,10 @@ public class AnimationSet {
      * @param names      Names for each animation
      */
     public AnimationSet(Animation[] animations, String[] names) {
+        this.animations = new HashMap<>();
 
         if (animations.length != names.length) {
-            throw new IllegalArgumentException("Length of arrays passed to AnimationSet's constructors were not equal!");
+            throw new IllegalArgumentException("Length of arrays passed to AnimationSet were not equal!");
         }
 
         for (int i = 0; i < animations.length; i++) {
@@ -68,5 +71,24 @@ public class AnimationSet {
      */
     Animation getAnimation(String name) {
         return this.animations.get(name);
+    }
+
+    /**
+     * Check if this AnimationSet is equal to another.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AnimationSet)) {
+            return false;
+        }
+        return this.hashCode() == o.hashCode();
+    }
+
+    /**
+     * Get the hashcode for this AnimationSet.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(animations);
     }
 }

@@ -17,36 +17,46 @@
 
 package actors.core;
 
-import core.sprites.RenderLayer;
 import mayflower.Actor;
 
-import java.util.ArrayList;
-
-/**
- * Mayrio's base Actor class.
- * Provides functionality for collision and layering.
- */
 public class MayrioActor extends Actor {
-    private RenderLayer layer;
-    private ArrayList<MayrioActor> touching;
+    private boolean collides;
+
+    public boolean collides() {
+        return collides;
+    }
+
+    protected void setCollides(boolean collides) {
+        this.collides = collides;
+    }
+
+    /**
+     * Gets the center coordinate of an edge of this MayrioActor
+     *
+     * @param direction Side of edge to get
+     * @return Coordinate
+     */
+    public Coordinate getEdge(Direction direction) {
+        int x = this.getCenterX();
+        int y = this.getCenterY();
+        int w = this.getImage().getWidth();
+        int h = this.getImage().getHeight();
+
+        switch (direction) {
+            case UP:
+                return new Coordinate(x, y - (h / 2));
+            case RIGHT:
+                return new Coordinate(x + (w / 2), y);
+            case DOWN:
+                return new Coordinate(x, y + (h / 2));
+            case LEFT:
+                return new Coordinate(x - (w / 2), y);
+        }
+
+        return null;
+    }
 
     @Override
     public void act() {
-        // We set touching to null to be 100% sure the old ArrayList gets caught by the GC
-        touching = null;
-        touching = new ArrayList<>(this.getIntersectingObjects(MayrioActor.class));
-
-        for (MayrioActor other : touching) {
-            if (this.layer.isAbove(other.layer)) {
-                // TODO: Figure out how to control object render order
-                return;
-            }
-
-            // TODO: Force other actor to move away when collision occurs
-        }
-    }
-
-    void setLayer(RenderLayer layer) {
-        this.layer = layer;
     }
 }

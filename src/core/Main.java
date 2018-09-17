@@ -15,37 +15,22 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * This file is part of mayrio.
- *
- * mayrio is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * mayrio is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package core;
 
-import actors.StaticActor;
-import core.sprites.Dimension;
+import actors.characters.Coin;
+import actors.characters.Ground;
+import actors.characters.Player;
+import actors.core.Coordinate;
+import actors.core.GroundType;
 import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Mayflower;
-import mayflower.MayflowerImage;
 import worlds.ActorTestWorld;
 
 public class Main extends Mayflower {
     private static final MayrioLogger logger;
-    private static Main instance;
+    private static Grid grid;
 
     static {
         logger = new MayrioLogger(Main.class);
@@ -55,22 +40,39 @@ public class Main extends Mayflower {
         super("Mayrio", 512, 448);
     }
 
-    @Override
-    public void init() {
-        // Test code for SpriteSheet
-
-        ActorTestWorld world = new ActorTestWorld();
-        MayrioLogger.setLevel(LogLevel.ALL);
-
-        SpriteSheet sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/mario_large.png", 2);
-        MayflowerImage testSprite = sheet.getSprite(1);
-        StaticActor testActor = new StaticActor(testSprite, false);
-
-        Mayflower.setWorld(world);
-        world.addObject(testActor, 16, 16);
+    public static void main(String[] args) {
+        new Main();
     }
 
-    public static void main(String[] args) {
-        Main.instance = new Main();
+    public static Grid getGrid() {
+        return grid;
+    }
+
+    @Override
+    public void init() {
+        int width = Mayflower.getWidth();
+        int height = Mayflower.getHeight();
+        int cellSize = 32;
+
+        grid = Grid.getInstance(width, height, cellSize);
+
+        SpriteSheet.setScale(2);
+        Player player = Player.get();
+        Ground ground = new Ground(GroundType.MIDDLE);
+        Coin coin = new Coin();
+        ActorTestWorld world = ActorTestWorld.get();
+        world.init();
+        MayrioLogger.setLevel(LogLevel.ALL);
+
+        Mayflower.setWorld(world);
+        Mayflower.showBounds(false);
+        Mayflower.showFPS(false);
+
+        Coordinate pos = grid.gridToScreen(4, 8);
+        Coordinate gpos = grid.gridToScreen(8, 10);
+        Coordinate cpos = grid.gridToScreen(8, 8);
+        world.addObject(player, pos.x(), pos.y());
+        world.addObject(ground, gpos.x(), gpos.y());
+        world.addObject(coin, cpos.x(), cpos.y());
     }
 }

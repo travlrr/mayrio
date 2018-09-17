@@ -15,13 +15,23 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds;
+package worlds.core;
 
 import mayflower.World;
 
-public class Menu extends World {
-    @Override
-    public void act() {
+public abstract class Frame extends World {
+    private FramedWorld parent;
 
+    @Override
+    public abstract void act();
+
+    protected abstract void init();
+
+    public FramedWorld getParent() {
+        return parent;
+    }
+
+    void setParent(FramedWorld parent) {
+        this.parent = parent;
     }
 }

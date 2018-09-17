@@ -15,18 +15,28 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core;
+package core.util;
 
-public class WorldBuilder {
-    private static WorldBuilder instance;
-
-    private WorldBuilder() {
+/**
+ * Much like Timer, but uses framerates instead of milliseconds. Used internally to handle animations.
+ */
+public class AnimationTimer extends Timer {
+    /**
+     * Create a new AnimationTimer.
+     * Framerate defaults to 1 fps.
+     */
+    public AnimationTimer() {
+        super.setGoal(1000);
+        super.reset();
     }
 
-    public WorldBuilder getInstance() {
-        if (instance == null) {
-            instance = new WorldBuilder();
-        }
-        return instance;
+    public AnimationTimer(int framerate) {
+        this.set(framerate);
+    }
+
+    @Override
+    public void set(int framerate) {
+        super.setGoal(1000 / framerate);
+        this.reset();
     }
 }

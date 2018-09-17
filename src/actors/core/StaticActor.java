@@ -32,42 +32,26 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core;
+package actors.core;
 
-import mayflower.World;
+import mayflower.MayflowerImage;
 
-import java.util.HashMap;
+/**
+ * StaticActors are a simple extension of the Actor class that do not move.
+ * These are ideal for ground tiles, backgrounds, and the like.
+ */
+public class StaticActor extends MayrioActor {
+    private MayflowerImage sprite;
+    private boolean collides;
 
-public class  WorldManager {
-    private static WorldManager instance;
-    private static HashMap<String, World> worlds;
-
-    private WorldManager() {
-        worlds = new HashMap<>();
+    public StaticActor(MayflowerImage sprite, boolean enableCollision) {
+        this.sprite = sprite;
+        this.setCollides(enableCollision);
+        this.setImage(sprite);
     }
 
-    /**
-     * A static method called at the beginning of all Worlds in Mayrio to make them accessible through the WorldManager.
-     * @param name What to name the World
-     * @param world Class of the World to add
-     */
-    public static void register(String name, World world) {
-        worlds.put(name, world);
-    }
-
-    /**
-     * Get a World from the current list
-     * @param name Name of World to get
-     * @return The World, if it exists
-     */
-    public static World get(String name) {
-        return worlds.get(name);
-    }
-
-    public WorldManager getInstance() {
-        if (instance == null) {
-            instance = new WorldManager();
-        }
-        return instance;
+    @Override
+    public void act() {
+        super.act();
     }
 }

@@ -57,15 +57,19 @@ public class Animation {
         frameRate = rate;
     }
 
-    public int getFrameRate() {
+    int getFrameRate() {
         return frameRate;
     }
 
-    public MayflowerImage getNextFrame() {
+    MayflowerImage getNextFrame() {
         currentFrame = currentFrame % frames.length;
         MayflowerImage ret = frames[currentFrame];
         currentFrame = currentFrame + 1;
         return ret;
+    }
+
+    MayflowerImage getFirstFrame() {
+        return frames[0];
     }
 
     public void resize(int w, int h) {
@@ -78,5 +82,35 @@ public class Animation {
         for (MayflowerImage p : frames) {
             p.setTransparency(percent);
         }
+    }
+
+    public Animation mirrorHorizontal() {
+        MayflowerImage[] mFrames = new MayflowerImage[this.frames.length];
+        for (int i = 0; i < this.frames.length; i++) {
+            mFrames[i] = new MayflowerImage(frames[i]);
+        }
+        for (MayflowerImage frame : mFrames) {
+            frame.mirrorHorizontally();
+        }
+        return new Animation(this.frameRate, mFrames);
+    }
+
+    public Animation mirrorVertical() {
+        MayflowerImage[] mFrames = new MayflowerImage[this.frames.length];
+        for (int i = 0; i < this.frames.length; i++) {
+            mFrames[i] = new MayflowerImage(frames[i]);
+        }
+        for (MayflowerImage frame : mFrames) {
+            frame.mirrorVertically();
+        }
+        return new Animation(this.frameRate, mFrames);
+    }
+
+    public int getCurrentFrame() {
+        return this.currentFrame;
+    }
+
+    public void reset() {
+        this.currentFrame = 0;
     }
 }

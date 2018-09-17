@@ -15,27 +15,26 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors;
+package actors.core;
 
-import mayflower.Actor;
-import mayflower.MayflowerImage;
+public enum GroundType {
+    CORNER_TOPLEFT(0),
+    FLAT_TOP(1),
+    CORNER_TOPRIGHT(2),
+    FLAT_LEFT(3),
+    MIDDLE(4),
+    FLAT_RIGHT(5),
+    CORNER_BOTTOMLEFT(6),
+    FLAT_BOTTOM(7),
+    CORNER_BOTTOMRIGHT(8);
 
-/**
- * StaticActors are a simple extension of the Actor class that do not move.
- * These are ideal for ground tiles, backgrounds, and the like.
- */
-public class StaticActor extends Actor {
-    private MayflowerImage sprite;
-    private boolean collides;
+    private int type;
 
-    public StaticActor(MayflowerImage sprite, boolean enableCollision) {
-        this.sprite = sprite;
-        this.collides = enableCollision;
-
-        this.setImage(sprite);
+    GroundType(int type) {
+        this.type = type;
     }
 
-    @Override
-    public void act() {
+    public int getValue() {
+        return type;
     }
 }
