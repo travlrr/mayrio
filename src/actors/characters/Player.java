@@ -140,7 +140,7 @@ public class Player extends AnimatedActor {
         }
 
         // Movement and animation
-        if (Mayflower.isKeyDown(Keyboard.KEY_UP)) {
+        if (Mayflower.isKeyDown(Keyboard.KEY_UP) || Mayflower.isKeyDown(Keyboard.KEY_W) ) {
             jump();
         }
 
@@ -153,7 +153,7 @@ public class Player extends AnimatedActor {
             }
         }
 
-        if (Mayflower.isKeyDown(Keyboard.KEY_RIGHT)) {
+        if (Mayflower.isKeyDown(Keyboard.KEY_RIGHT) || Mayflower.isKeyDown(Keyboard.KEY_D)) {
             if (isGrounded()) {
                 this.setAnimation("walkRight");
             }
@@ -162,7 +162,7 @@ public class Player extends AnimatedActor {
             }
             this.facing = Direction.RIGHT;
             accel();
-        } else if (Mayflower.isKeyDown(Keyboard.KEY_LEFT)) {
+        } else if (Mayflower.isKeyDown(Keyboard.KEY_LEFT) || Mayflower.isKeyDown(Keyboard.KEY_A) ) {
             if (isGrounded()) {
                 this.setAnimation("walkLeft");
             }
@@ -171,7 +171,7 @@ public class Player extends AnimatedActor {
             }
             this.facing = Direction.LEFT;
             accel();
-        } else if (Mayflower.isKeyDown(Keyboard.KEY_DOWN)) {
+        } else if (Mayflower.isKeyDown(Keyboard.KEY_DOWN) || Mayflower.isKeyDown(Keyboard.KEY_S)) {
             this.slow();
             if (facing.equals(Direction.LEFT)) {
                 this.setAnimation("crouchLeft");
@@ -193,7 +193,7 @@ public class Player extends AnimatedActor {
     }
 
     /**
-     * Called when switching directions. Spawns a Dust object and sets speed to 1/4.
+     * Called when switching directions. Spawns a Dust object and sets speed to 1/4.```
      */
     private void turn() {
         if (isGrounded()) {
