@@ -1,5 +1,3 @@
-TODO: Create spritesheets for world tiles - see tiles_ground.png
-TODO: Create spritesheets for items and interactive tiles - see tiles_general.png
 TODO: Create spritesheets for backgrounds - see tiles_bg.png
 
 Other tiles will be added and given ingame behavior after basic functionality is out of the way.
