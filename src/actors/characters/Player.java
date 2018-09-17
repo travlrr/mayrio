@@ -127,7 +127,7 @@ public class Player extends AnimatedActor {
         }
 
         // Die if below world
-        if (this.getX() > this.getWorld().getHeight()) {
+        if (this.getY() > this.getWorld().getHeight()) {
             this.kill();
         }
 
@@ -144,13 +144,16 @@ public class Player extends AnimatedActor {
             jump();
         }
 
+        // Jump animations
         if (!isGrounded()) {
             if (getSpeedY() > 0) {
                 this.setAnimation(facing == Direction.LEFT ? "jumpLeft" : "jumpRight");
             } else if (getSpeedY() < -1) {
                 this.setAnimation(facing == Direction.LEFT ? "fallLeft" : "fallRight");
             }
-        } else if (Mayflower.isKeyDown(Keyboard.KEY_RIGHT)) {
+        }
+
+        if (Mayflower.isKeyDown(Keyboard.KEY_RIGHT)) {
             if (isGrounded()) {
                 this.setAnimation("walkRight");
             }
@@ -193,12 +196,14 @@ public class Player extends AnimatedActor {
      * Called when switching directions. Spawns a Dust object and sets speed to 1/4.
      */
     private void turn() {
-        Dust dust = new Dust();
+        if (isGrounded()) {
+            Dust dust = new Dust();
+            int x = this.getX() + this.getImage().getWidth() / 2;
+            int y = this.getY() + this.getImage().getHeight();
 
-        int x = this.getX() + this.getImage().getWidth() / 2;
-        int y = this.getY() + this.getImage().getHeight();
+            this.getWorld().addObject(dust, x - 4, y - 4);
+        }
 
-        this.getWorld().addObject(dust, x - 4, y - 4);
         this.setSpeedX(getSpeedX() / 4);
     }
 
