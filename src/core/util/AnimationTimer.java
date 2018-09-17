@@ -15,21 +15,28 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package core.sprites;
+package core.util;
 
-public enum RenderLayer {
-    FOREGROUND(3),
-    PLAYER(2),
-    WORLD(1),
-    BACKGROUND(0);
-
-    private int layer;
-
-    RenderLayer(int layer) {
-        this.layer = layer;
+/**
+ * Much like Timer, but uses framerates instead of milliseconds. Used internally to handle animations.
+ */
+public class AnimationTimer extends Timer {
+    /**
+     * Create a new AnimationTimer.
+     * Framerate defaults to 1 fps.
+     */
+    public AnimationTimer() {
+        super.setGoal(1000);
+        super.reset();
     }
 
-    public boolean isAbove(RenderLayer other) {
-        return this.layer > other.layer;
+    public AnimationTimer(int framerate) {
+        this.set(framerate);
+    }
+
+    @Override
+    public void set(int framerate) {
+        super.setGoal(1000 / framerate);
+        this.reset();
     }
 }

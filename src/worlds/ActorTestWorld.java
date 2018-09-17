@@ -17,13 +17,38 @@
 
 package worlds;
 
+import actors.characters.Player;
+import core.WorldBuilder;
+import mayflower.Label;
 import mayflower.World;
 
 /**
  * Placeholder World for debugging
  */
 public class ActorTestWorld extends World {
+    private static ActorTestWorld instance;
+    private Label points;
+
+    private ActorTestWorld() {
+    }
+
+    public static ActorTestWorld get() {
+        if (instance == null) {
+            instance = new ActorTestWorld();
+        }
+        return instance;
+    }
+
+    public void init() {
+        WorldBuilder.setWorld(instance);
+        WorldBuilder.createFlatGround();
+        points = new Label("Points: 0", 24);
+        instance.addObject(points, 128, 128);
+    }
+
     @Override
     public void act() {
+        Player ply = this.getObjects(Player.class).get(0);
+        points.setText(String.format("Points: %d", ply.getPoints()));
     }
 }

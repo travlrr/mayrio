@@ -17,7 +17,7 @@
 
 package actors.characters;
 
-import actors.core.MayrioActor;
+import actors.core.PhysActor;
 
-public class YoshiCoin extends MayrioActor {
+public class YoshiCoin extends PhysActor {
 }

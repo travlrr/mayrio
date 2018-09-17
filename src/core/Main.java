@@ -17,17 +17,20 @@
 
 package core;
 
-import actors.core.StaticActor;
-import core.sprites.Dimension;
+import actors.characters.Coin;
+import actors.characters.Ground;
+import actors.characters.Player;
+import actors.core.Coordinate;
+import actors.core.GroundType;
 import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Mayflower;
-import mayflower.MayflowerImage;
 import worlds.ActorTestWorld;
 
 public class Main extends Mayflower {
     private static final MayrioLogger logger;
+    private static Grid grid;
 
     static {
         logger = new MayrioLogger(Main.class);
@@ -37,23 +40,41 @@ public class Main extends Mayflower {
         super("Mayrio", 512, 448);
     }
 
+    public static void main(String[] args) {
+        new Main();
+    }
+
+    public static Grid getGrid() {
+        return grid;
+    }
+
     @Override
     public void init() {
         // Test code for SpriteSheet
 
-        ActorTestWorld world = new ActorTestWorld();
+        int width = Mayflower.getWidth();
+        int height = Mayflower.getHeight();
+        int cellSize = 32;
+
+        grid = Grid.getInstance(width, height, cellSize);
+
+        SpriteSheet.setScale(2);
+        Player player = Player.get();
+        Ground ground = new Ground(GroundType.MIDDLE);
+        Coin coin = new Coin();
+        ActorTestWorld world = ActorTestWorld.get();
+        world.init();
         MayrioLogger.setLevel(LogLevel.ALL);
 
-        SpriteSheet.setScale(4);
-        SpriteSheet sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/mario_large.png");
-        MayflowerImage testSprite = sheet.getSprite(1);
-        StaticActor testActor = new StaticActor(testSprite, false);
-
         Mayflower.setWorld(world);
-        world.addObject(testActor, 16, 16);
-    }
+        Mayflower.showBounds(true);
+        Mayflower.showFPS(true);
 
-    public static void main(String[] args) {
-        new Main();
+        Coordinate pos = grid.gridToScreen(6, 8);
+        Coordinate gpos = grid.gridToScreen(8, 10);
+        Coordinate cpos = grid.gridToScreen(8, 8);
+        world.addObject(player, pos.x(), pos.y());
+        world.addObject(ground, gpos.x(), gpos.y());
+        world.addObject(coin, cpos.x(), cpos.y());
     }
 }

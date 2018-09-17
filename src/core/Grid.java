@@ -17,6 +17,7 @@
 
 package core;
 
+import actors.core.Coordinate;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 
@@ -27,14 +28,15 @@ import java.util.HashMap;
  */
 public class Grid {
     private static final MayrioLogger logger;
+    private static Grid instance;
     private static int width;
     private static int height;
     private static int cellSize;
-    private static HashMap<int[], int[]> positions;
-    private static Grid instance;
+    private static int cellCountX;
+    private static int cellCountY;
+    private static HashMap<Coordinate, Coordinate> gridToScreen;
 
     static {
-        positions = new HashMap<>();
         logger = new MayrioLogger(Grid.class);
     }
 
@@ -42,20 +44,27 @@ public class Grid {
         Grid.width = width;
         Grid.height = height;
         Grid.cellSize = cellSize;
-
+        Grid.cellCountX = width / cellSize;
+        Grid.cellCountY = height / cellSize;
+        Grid.gridToScreen = new HashMap<>();
 
         if (width % cellSize != 0 | height % cellSize != 0) {
             logger.logf(LogLevel.FATAL, "Grid failed to initialize: width%cellSize = %d, height%cellSize = %d", width % cellSize, height % cellSize);
             throw new IllegalArgumentException("Grid failed to initialize; cellSize is invalid");
         }
 
-        int cellCountX = width / cellSize;
-        int cellCountY = height / cellSize;
 
-        // TODO: Finish implementing Grid
+        for (int y = 0; y < cellCountY; y++) {
+            for (int x = 0; x < cellCountX; x++) {
+                Coordinate gridCoords = new Coordinate(x, y);
+                Coordinate screenCoords = new Coordinate(x * cellSize, y * cellSize);
+
+                gridToScreen.put(gridCoords, screenCoords);
+            }
+        }
     }
 
-    public static Grid getGrid(int width, int height, int cellSize) {
+    public static Grid getInstance(int width, int height, int cellSize) {
         if (instance == null) {
             instance = new Grid(width, height, cellSize);
         }
@@ -63,13 +72,16 @@ public class Grid {
         return instance;
     }
 
-    public int[][] screenToGrid() {
-        // TODO: Finish implementing Grid.screenToGrid()
-        return new int[0][0];
+    public Coordinate gridToScreen(int x, int y) {
+        Coordinate coord = new Coordinate(x, y);
+        return gridToScreen.get(coord);
     }
 
-    public int[][] gridToScreen() {
-        // TODO: Finish implementing Grid.gridToScreen()
-        return new int[0][0];
+    public int getCellsX() {
+        return cellCountX;
+    }
+
+    public int getCellsY() {
+        return cellCountY;
     }
 }

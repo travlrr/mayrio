@@ -17,7 +17,38 @@
 
 package actors.characters;
 
-import actors.core.MayrioActor;
+import actors.core.AnimatedActor;
+import actors.core.Animation;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 
-public class Coin extends MayrioActor {
+public class Coin extends AnimatedActor {
+    private static SpriteSheet sheet;
+    private static Animation anim;
+    private static Animation anim_grey;
+    private static boolean grey;
+
+    static {
+        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/items/coins.png");
+        anim = new Animation(10, sheet.getSprites(0, 1, 2, 3));
+        anim_grey = new Animation(10, sheet.getSprites(4, 5, 6, 7));
+    }
+
+    public Coin() {
+        anim.reset();
+        grey = false;
+        this.setAnimation(anim);
+        this.setCollides(false);
+        this.setGravity(false);
+    }
+
+    @Override
+    public void act() {
+        super.act();
+        Player ply = getOneIntersectingObject(Player.class);
+        if (ply != null) {
+            this.getWorld().removeObject(this);
+            ply.addPoint();
+        }
+    }
 }

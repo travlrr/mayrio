@@ -15,22 +15,26 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.characters;
+package actors.core;
 
-import actors.core.GroundType;
-import actors.core.StaticActor;
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
+public enum GroundType {
+    CORNER_TOPLEFT(0),
+    FLAT_TOP(1),
+    CORNER_TOPRIGHT(2),
+    FLAT_LEFT(3),
+    MIDDLE(4),
+    FLAT_RIGHT(5),
+    CORNER_BOTTOMLEFT(6),
+    FLAT_BOTTOM(7),
+    CORNER_BOTTOMRIGHT(8);
 
-public class Ground extends StaticActor {
-    private static SpriteSheet sheet;
+    private int type;
 
-    static {
-        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
+    GroundType(int type) {
+        this.type = type;
     }
 
-    public Ground(GroundType type) {
-        super(sheet.getSprite(type.getValue()), true);
+    public int getValue() {
+        return type;
     }
 }
-

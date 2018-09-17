@@ -26,11 +26,12 @@ import java.util.HashMap;
  */
 public class AnimationSet {
     private static final MayrioLogger logger;
-    private HashMap<String, Animation> animations;
 
     static {
         logger = new MayrioLogger(AnimationSet.class);
     }
+
+    private HashMap<String, Animation> animations;
 
     /**
      * Constructs a new AnimationSet.
@@ -40,9 +41,10 @@ public class AnimationSet {
      * @param names      Names for each animation
      */
     public AnimationSet(Animation[] animations, String[] names) {
+        this.animations = new HashMap<>();
 
         if (animations.length != names.length) {
-            throw new IllegalArgumentException("Length of arrays passed to AnimationSet's constructors were not equal!");
+            throw new IllegalArgumentException("Length of arrays passed to AnimationSet were not equal!");
         }
 
         for (int i = 0; i < animations.length; i++) {

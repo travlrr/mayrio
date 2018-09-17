@@ -17,20 +17,7 @@
 
 package actors.characters;
 
-import actors.core.GroundType;
-import actors.core.StaticActor;
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
+import actors.core.PhysActor;
 
-public class Ground extends StaticActor {
-    private static SpriteSheet sheet;
-
-    static {
-        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
-    }
-
-    public Ground(GroundType type) {
-        super(sheet.getSprite(type.getValue()), true);
-    }
+public class Brick extends PhysActor {
 }
-

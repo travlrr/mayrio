@@ -17,16 +17,32 @@
 
 package core;
 
-public class WorldBuilder {
-    private static WorldBuilder instance;
+import actors.characters.Ground;
+import actors.core.Coordinate;
+import actors.core.GroundType;
+import mayflower.Mayflower;
+import mayflower.World;
 
-    private WorldBuilder() {
+public class WorldBuilder {
+    private static Grid grid;
+    private static World world;
+
+    static {
+        WorldBuilder.grid = Main.getGrid();
     }
 
-    public WorldBuilder getInstance() {
-        if (instance == null) {
-            instance = new WorldBuilder();
+    public static void setWorld(World world) {
+        WorldBuilder.world = world;
+    }
+
+
+    public static void createFlatGround() {
+        for (int x = 0; x < grid.getCellsX(); x++) {
+            Ground ground1 = new Ground(GroundType.FLAT_TOP);
+            Ground ground2 = new Ground(GroundType.MIDDLE);
+            Coordinate coords = grid.gridToScreen(x, 0);
+            world.addObject(ground1, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 3);
+            world.addObject(ground2, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 2);
         }
-        return instance;
     }
 }

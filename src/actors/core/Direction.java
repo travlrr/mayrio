@@ -18,10 +18,10 @@
 package actors.core;
 
 public enum Direction {
-    UP(0),
-    RIGHT(90),
-    DOWN(180),
-    LEFT(270);
+    UP(270),
+    RIGHT(0),
+    DOWN(90),
+    LEFT(180);
 
     private int angle;
 

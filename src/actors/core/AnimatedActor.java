@@ -17,25 +17,66 @@
 
 package actors.core;
 
-// TODO: Finish AnimatedActor
+import core.util.AnimationTimer;
+import core.util.log.MayrioLogger;
 
 /**
  * AnimatedActor is a further extension of MayrioActor that adds animation capabilities.
  */
-public class AnimatedActor extends MayrioActor {
+public class AnimatedActor extends PhysActor {
+    private static final MayrioLogger logger;
+
+    static {
+        logger = new MayrioLogger(AnimatedActor.class);
+    }
+
     private AnimationSet animations;
     private Animation currentAnimation;
+    private AnimationTimer animTimer;
+
+    protected AnimatedActor() {
+        animTimer = new AnimationTimer();
+    }
 
     @Override
     public void act() {
         super.act();
+        long time = animTimer.getTimeLeft();
+        if (animTimer.getTimeLeft() <= 0 && currentAnimation != null) {
+            this.setImage(currentAnimation.getNextFrame());
+            animTimer.reset();
+        }
     }
 
     public AnimationSet getAnimations() {
         return this.animations;
     }
 
-    public void setAnimation(String name) {
-        this.currentAnimation = animations.getAnimation(name);
+    protected void setAnimation(String name) {
+        if (this.getCurrentAnimation() == null || !this.getCurrentAnimation().equals(getAnimation(name))) {
+            this.currentAnimation = animations.getAnimation(name);
+            this.setImage(currentAnimation.getFirstFrame());
+            animTimer.set(currentAnimation.getFrameRate());
+        }
+    }
+
+    protected void setAnimation(Animation anim) {
+        if (this.getCurrentAnimation() == null || !this.getCurrentAnimation().equals(anim)) {
+            this.currentAnimation = anim;
+            this.setImage(currentAnimation.getFirstFrame());
+            animTimer.set(currentAnimation.getFrameRate());
+        }
+    }
+
+    protected void setAnimationSet(AnimationSet animations) {
+        this.animations = animations;
+    }
+
+    protected Animation getCurrentAnimation() {
+        return this.currentAnimation;
+    }
+
+    protected Animation getAnimation(String name) {
+        return animations.getAnimation(name);
     }
 }

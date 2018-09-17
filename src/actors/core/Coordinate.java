@@ -17,20 +17,84 @@
 
 package actors.core;
 
-public class Coordinate {
-    private int x;
-    private int y;
+import java.util.Objects;
 
+/**
+ * The Coordinate class is used to represent a single point in 2D space.
+ */
+public class Coordinate {
+    private double x;
+    private double y;
+
+    /**
+     * Construct a Coordinate with the given values
+     *
+     * @param x X value of the Coordinate
+     * @param y Y value of the Coordinate
+     */
     public Coordinate(int x, int y) {
+        this.x = (double) x;
+        this.y = (double) y;
+    }
+
+    /**
+     * Construct a Coordinate with the given values
+     *
+     * @param x X value of the Coordinate
+     * @param y Y value of the Coordinate
+     */
+    public Coordinate(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public int x() {
+        return (int) x;
+    }
+
+    public int y() {
+        return (int) y;
+    }
+
+    public double dx() {
         return x;
     }
 
-    public int getY() {
+    public double dy() {
         return y;
+    }
+
+    /**
+     * Subtract a Coordinate from this one
+     */
+    public Coordinate sub(Coordinate other) {
+        return new Coordinate(this.x - other.x, this.y - other.y);
+    }
+
+    /**
+     * Add a Coordinate to this one
+     */
+    public Coordinate add(Coordinate other) {
+        return new Coordinate(this.x + other.x, this.y + other.y);
+    }
+
+    /**
+     * Checks if this Coordinate is equal to another
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Coordinate) {
+            Coordinate casted = (Coordinate) other;
+            return (this.x() == casted.x()) && (this.y() == casted.y());
+        }
+        return false;
+    }
+
+    /**
+     * Returns the hashcode for this Coordinate
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

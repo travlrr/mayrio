@@ -17,20 +17,35 @@
 
 package actors.characters;
 
-import actors.core.GroundType;
-import actors.core.StaticActor;
+import actors.core.AnimatedActor;
+import actors.core.Animation;
+import actors.core.Direction;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
-public class Ground extends StaticActor {
+public class Dust extends AnimatedActor {
     private static SpriteSheet sheet;
+    private static Animation anim;
 
     static {
-        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
+        sheet = new SpriteSheet(new Dimension(8, 8), "/sprites/dust.png");
+        anim = new Animation(10, sheet.getSprites(0, 1, 2, 3));
     }
 
-    public Ground(GroundType type) {
-        super(sheet.getSprite(type.getValue()), true);
+    Dust() {
+        anim.reset();
+        this.setAnimation(anim);
+        this.setCollides(false);
+        this.setGravity(false);
+        this.setSpeedX(1);
+    }
+
+    @Override
+    public void act() {
+        super.act();
+        if (this.getCurrentAnimation().getCurrentFrame() == 4) {
+            this.getWorld().removeObject(this);
+        }
+        this.move(Direction.UP);
     }
 }
-

@@ -17,84 +17,25 @@
 
 package actors.core;
 
-import actors.characters.Ground;
-import core.sprites.RenderLayer;
 import mayflower.Actor;
 
-import java.util.ArrayList;
-
-/**
- * Mayrio's base Actor class.
- * Provides functionality for collision and layering.
- */
 public class MayrioActor extends Actor {
-    private RenderLayer layer;
-    private ArrayList<MayrioActor> touching;
-    private int maxMoveSpeed;
-    private int currentMoveSpeed;
-    private int maxVerticalSpeed;
-    private int currentVerticalSpeed;
-    private boolean grounded;
+    private boolean collides;
 
-    @Override
-    public void act() {
-        // We set touching to null to be 100% sure the old ArrayList gets caught by the GC
-        touching = null;
-        touching = new ArrayList<>(this.getIntersectingObjects(MayrioActor.class));
-
-        // Layering
-        for (MayrioActor other : touching) {
-            if (this.layer.isAbove(other.layer)) {
-                // TODO: Figure out how to control object render order
-                return;
-            }
-        }
-
-        /*
-         * Physics
-         */
-        for (Actor other : touching) {
-            // Set grounded
-            if (other instanceof Ground) {
-                Ground ground = (Ground) other;
-                if (this.getEdge(Direction.DOWN).getY() == ground.getEdge(Direction.UP).getY()) {
-                    grounded = true;
-                }
-            }
-
-            // TODO: Move away when collision occurs
-            if (other instanceof MayrioActor) {
-                MayrioActor actor = (MayrioActor) other;
-            } else if (other instanceof StaticActor) {
-                StaticActor actor = (StaticActor) other;
-                if (!actor.collides()) {
-                    return;
-                }
-
-            }
-        }
-
-        // Decrease vertical speed if in air
-        if (!grounded) {
-            this.currentVerticalSpeed -= 1;
-        } else {
-            this.currentVerticalSpeed = 0;
-        }
+    public boolean collides() {
+        return collides;
     }
 
-    void setLayer(RenderLayer layer) {
-        this.layer = layer;
+    protected void setCollides(boolean collides) {
+        this.collides = collides;
     }
 
-    public void move(int distance, Direction direction) {
-        this.setRotation(direction.getAngle());
-        super.move(distance);
-    }
-
-    public void jump() {
-        this.currentVerticalSpeed = maxVerticalSpeed;
-    }
-
+    /**
+     * Gets the center coordinate of an edge of this MayrioActor
+     *
+     * @param direction Side of edge to get
+     * @return Coordinate
+     */
     public Coordinate getEdge(Direction direction) {
         int x = this.getCenterX();
         int y = this.getCenterY();
@@ -113,5 +54,9 @@ public class MayrioActor extends Actor {
         }
 
         return null;
+    }
+
+    @Override
+    public void act() {
     }
 }

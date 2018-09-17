@@ -17,6 +17,7 @@
 
 package core.sprites;
 
+import core.util.ImageUtils;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.MayflowerImage;
@@ -36,16 +37,17 @@ import java.util.ArrayList;
 public class SpriteSheet {
     private static final MayrioLogger logger;
     private static int scaleFactor;
-    private Dimension spriteSize;
-    private String path;
-    private BufferedImage sheet;
-    private ArrayList<MayflowerImage> sprites;
-
-    // TODO: Implement sprite scaling
 
     static {
         logger = new MayrioLogger(SpriteSheet.class);
     }
+
+    private Dimension spriteSize;
+    private String path;
+    private BufferedImage sheet;
+
+    // TODO: Implement sprite scaling
+    private ArrayList<MayflowerImage> sprites;
 
     /**
      * Constructs a new SpriteSheet, splitting the given sheet image into usable chunks by row-major order.
@@ -77,9 +79,9 @@ public class SpriteSheet {
             for (int c = 0; c < nColumns; c++) {
                 BufferedImage spriteImage = sheet.getSubimage(c * spriteSize.getWidth(), r * spriteSize.getHeight(), spriteSize.getWidth(), spriteSize.getHeight());
                 if (scaleFactor != 1) {
-                    spriteImage = imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * SpriteSheet.scaleFactor, spriteImage.getHeight() * SpriteSheet.scaleFactor, Image.SCALE_FAST));
+                    spriteImage = ImageUtils.imageToBufferedImage(spriteImage.getScaledInstance(spriteImage.getWidth() * SpriteSheet.scaleFactor, spriteImage.getHeight() * SpriteSheet.scaleFactor, Image.SCALE_FAST));
                 }
-                sprites.add(cellIndex, bufferedImageToMayflowerImage(spriteImage));
+                sprites.add(cellIndex, ImageUtils.bufferedImageToMayflowerImage(spriteImage));
                 cellIndex++;
             }
         }
@@ -88,11 +90,31 @@ public class SpriteSheet {
     }
 
     /**
-     * Sets the scaling factor of all new spritesheets
-     * @param scale Scale multiplier
+     * Sets the scaling factor of all new spritesheets. This must be a power of 2!
+     *
+     * @param scale Scale multiplier (power of 2)
      */
     public static void setScale(int scale) {
+        if (!isPowerOf2(scale)) {
+            throw new IllegalArgumentException("Scale passed to SpriteSheet.setScale is not a power of 2!");
+        }
         SpriteSheet.scaleFactor = scale;
+    }
+
+    /**
+     * Check if a number is a power of 2.
+     * Used to make sure scale factor doesn't make the sprites fit on the screen unevenly.
+     */
+    private static boolean isPowerOf2(int n) {
+        if (n == 2) {
+            return true;
+        }
+
+        while (n % 2 == 0) {
+            n /= 2;
+        }
+
+        return n == 1;
     }
 
     /**
@@ -113,7 +135,7 @@ public class SpriteSheet {
      */
     public MayflowerImage[] getSprites(int... indexes) {
         MayflowerImage[] ret = new MayflowerImage[indexes.length];
-        for(int i = 0; i < indexes.length; i++) {
+        for (int i = 0; i < indexes.length; i++) {
             ret[i] = sprites.get(i);
         }
         return ret;
@@ -132,47 +154,6 @@ public class SpriteSheet {
         } catch (IOException ex) {
             ex.printStackTrace();
             logger.log(LogLevel.ERROR, "A SpriteSheet was passed an invalid path!");
-        }
-        return ret;
-    }
-
-    /**
-     * Convert an Image to a BufferedImage. Used during sprite scaling.
-     *
-     * @param source Image to convert
-     * @return Converted Image
-     */
-    private BufferedImage imageToBufferedImage(Image source) {
-        if (source instanceof BufferedImage) {
-            return (BufferedImage) source;
-        }
-
-        BufferedImage ret = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g = ret.createGraphics();
-        g.drawImage(source, 0, 0, null);
-        g.dispose();
-
-        return ret;
-    }
-
-    /**
-     * Converts a BufferedImage to a MayflowerImage.
-     * The implementation for this is abhorrent, but it's a necessary workaround
-     * since MayflowerImage doesn't provide a constructor that accepts a BufferedImage.
-     * It works without any performance problems (theoretically) at smaller image sizes, though.
-     *
-     * @param image The BufferedImage to convert
-     * @return The converted MayflowerImage
-     */
-    private MayflowerImage bufferedImageToMayflowerImage(BufferedImage image) {
-        MayflowerImage ret = new MayflowerImage(image.getWidth(), image.getHeight());
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                java.awt.Color color = new java.awt.Color(image.getRGB(x, y), true);
-                mayflower.Color convertedColor = new mayflower.Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-                ret.setColorAt(x, y, convertedColor);
-            }
         }
         return ret;
     }
