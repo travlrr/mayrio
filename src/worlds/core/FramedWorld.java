@@ -25,7 +25,7 @@ import mayflower.World;
 import java.util.ArrayList;
 
 public class FramedWorld extends World {
-    private ArrayList<Frame> frames;
+    protected static ArrayList<Frame> frames;
     private int currentFrame;
     private Player ply;
 
@@ -35,6 +35,13 @@ public class FramedWorld extends World {
 
     @Override
     public void act() {
+        if (getEdge().equals(Direction.RIGHT) && currentFrame + 1 < frames.size()) {
+            nextFrame();
+        }
+
+        if (getEdge().equals(Direction.LEFT) && currentFrame - 1 >= 0) {
+            previousFrame();
+        }
     }
 
     private Direction getEdge() {
@@ -46,27 +53,26 @@ public class FramedWorld extends World {
         return null;
     }
 
-    public void addFrame(int pos, Frame frame) {
-        frames.add(pos, frame);
-        frame.setParent(this);
-    }
-
-    public void initAll() {
+    public void init() {
         for (Frame frame : frames) {
             frame.init();
         }
     }
 
-    public void nextFrame() {
+    private void nextFrame() {
         currentFrame++;
         Mayflower.setWorld(frames.get(currentFrame));
     }
 
-    public void previousFrame() {
+    private void previousFrame() {
         currentFrame--;
         if (currentFrame < 0) {
             throw new IndexOutOfBoundsException();
         }
         Mayflower.setWorld(frames.get(currentFrame));
+    }
+
+    protected void registerFrame(Frame frame) {
+        frames.add(frame);
     }
 }

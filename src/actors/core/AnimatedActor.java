@@ -21,7 +21,7 @@ import core.util.AnimationTimer;
 import core.util.log.MayrioLogger;
 
 /**
- * AnimatedActor is a further extension of MayrioActor that adds animation capabilities.
+ * AnimatedActor is a further extension of PhysActor that adds animation capabilities.
  */
 public class AnimatedActor extends PhysActor {
     private static final MayrioLogger logger;
@@ -48,7 +48,7 @@ public class AnimatedActor extends PhysActor {
         }
     }
 
-    public AnimationSet getAnimations() {
+    protected AnimationSet getAnimations() {
         return this.animations;
     }
 
@@ -76,7 +76,7 @@ public class AnimatedActor extends PhysActor {
         return this.currentAnimation;
     }
 
-    protected Animation getAnimation(String name) {
+    private Animation getAnimation(String name) {
         return animations.getAnimation(name);
     }
 }

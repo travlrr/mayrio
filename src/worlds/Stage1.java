@@ -19,11 +19,15 @@ package worlds;
 
 import actors.characters.Player;
 import worlds.core.FramedWorld;
+import worlds.frames.stage1.Stage1f1;
+import worlds.frames.stage1.Stage1f2;
 
 public class Stage1 extends FramedWorld {
 
     public Stage1(Player ply) {
         super(ply);
+        frames.add(new Stage1f1());
+        frames.add(new Stage1f2());
     }
 
     @Override

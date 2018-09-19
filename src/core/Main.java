@@ -25,7 +25,7 @@ import actors.core.GroundType;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Mayflower;
-import worlds.ActorTestWorld;
+import worlds.Stage1;
 
 public class Main extends Mayflower {
     private static final MayrioLogger logger;
@@ -58,7 +58,7 @@ public class Main extends Mayflower {
         Player player = Player.get();
         Ground ground = new Ground(GroundType.MIDDLE);
         Coin coin = new Coin();
-        ActorTestWorld world = ActorTestWorld.get();
+        Stage1 world = new Stage1(player);
         world.init();
         MayrioLogger.setLevel(LogLevel.ALL);
 

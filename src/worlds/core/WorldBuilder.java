@@ -48,8 +48,11 @@ public class WorldBuilder {
         }
     }
 
-    public static void createPitfall() {
+    public static void createPitfall(int startCell, int endCell) {
         for (int x = 0; x < grid.getCellsX(); x++) {
+            if (x >= startCell && x <= endCell) {
+                continue;
+            }
             Ground ground1 = new Ground(GroundType.FLAT_TOP);
             Ground ground2 = new Ground(GroundType.MIDDLE);
             Coordinate coords = grid.gridToScreen(x, 0);
