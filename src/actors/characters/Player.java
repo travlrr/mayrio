@@ -193,7 +193,7 @@ public class Player extends AnimatedActor {
     }
 
     /**
-     * Called when switching directions. Spawns a Dust object and sets speed to 1/4.```
+     * Called when switching directions. Spawns a Dust object and sets speed to 1/4.
      */
     private void turn() {
         if (isGrounded()) {

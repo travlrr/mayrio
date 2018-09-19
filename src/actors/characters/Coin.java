@@ -49,6 +49,7 @@ public class Coin extends AnimatedActor {
         if (ply != null) {
             this.getWorld().removeObject(this);
             ply.addPoint();
+
         }
     }
 }
