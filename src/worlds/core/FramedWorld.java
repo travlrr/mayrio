@@ -25,7 +25,7 @@ import mayflower.World;
 import java.util.ArrayList;
 
 public class FramedWorld extends World {
-    private ArrayList<World> frames;
+    private ArrayList<Frame> frames;
     private int currentFrame;
     private Player ply;
 
@@ -49,6 +49,12 @@ public class FramedWorld extends World {
     public void addFrame(int pos, Frame frame) {
         frames.add(pos, frame);
         frame.setParent(this);
+    }
+
+    public void initAll() {
+        for (Frame frame : frames) {
+            frame.init();
+        }
     }
 
     public void nextFrame() {
