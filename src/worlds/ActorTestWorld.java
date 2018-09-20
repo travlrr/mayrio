@@ -22,13 +22,13 @@ import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 import mayflower.Label;
 import mayflower.MayflowerImage;
-import mayflower.World;
+import worlds.core.MayrioWorld;
 import worlds.core.WorldBuilder;
 
 /**
  * Placeholder World for debugging
  */
-public class ActorTestWorld extends World {
+public class ActorTestWorld extends MayrioWorld {
     private static ActorTestWorld instance;
     private Label points;
 
@@ -42,6 +42,7 @@ public class ActorTestWorld extends World {
         return instance;
     }
 
+    @Override
     public void init() {
         WorldBuilder.setWorld(instance);
         WorldBuilder.createFlatGround();

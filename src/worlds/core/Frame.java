@@ -17,22 +17,17 @@
 
 package worlds.core;
 
-import mayflower.World;
-
-public abstract class Frame extends World {
+public abstract class Frame {
     private static Frame instance;
     private FramedWorld parent;
 
-    @Override
-    public abstract void act();
+    public Frame(FramedWorld parent) {
+        this.parent = parent;
+    }
 
     protected abstract void init();
 
-    public FramedWorld getParent() {
+    protected FramedWorld getParent() {
         return parent;
-    }
-
-    void setParent(FramedWorld parent) {
-        this.parent = parent;
     }
 }

@@ -22,10 +22,12 @@ import actors.characters.Ground;
 import actors.characters.Player;
 import actors.core.Coordinate;
 import actors.core.GroundType;
+import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Mayflower;
 import worlds.Stage1;
+import worlds.core.MayrioWorld;
 
 public class Main extends Mayflower {
     private static final MayrioLogger logger;
@@ -36,7 +38,7 @@ public class Main extends Mayflower {
     }
 
     private Main() {
-        super("Mayrio", 512, 448);
+        super("Mayrio", 1024, 896);
     }
 
     public static void main(String[] args) {
@@ -51,19 +53,24 @@ public class Main extends Mayflower {
     public void init() {
         int width = Mayflower.getWidth();
         int height = Mayflower.getHeight();
-        int cellSize = 32;
+        int cellSize = 64;
+        int scaleMul = Mayflower.getWidth() / 256;
+
+        SpriteSheet.setScale(scaleMul);
 
         grid = Grid.getInstance(width, height, cellSize);
 
         Player player = Player.get();
         Ground ground = new Ground(GroundType.MIDDLE);
         Coin coin = new Coin();
-        Stage1 world = new Stage1(player);
+
+        MayrioWorld world = new Stage1(player);
         world.init();
+
         MayrioLogger.setLevel(LogLevel.ALL);
 
         Mayflower.setWorld(world);
-        Mayflower.showBounds(false);
+        Mayflower.showBounds(true);
         Mayflower.showFPS(false);
 
         Coordinate pos = grid.gridToScreen(4, 8);

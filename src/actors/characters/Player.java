@@ -57,7 +57,7 @@ public class Player extends AnimatedActor {
         this.facing = Direction.RIGHT;
         this.shroomed = false;
         this.points = 0;
-        this.setMaxSpeedX(4);
+        this.setMaxSpeedX(6);
         this.setMaxSpeedY(10);
 
         // Small Mario animations
@@ -140,7 +140,7 @@ public class Player extends AnimatedActor {
         }
 
         // Movement and animation
-        if (Mayflower.isKeyDown(Keyboard.KEY_UP) || Mayflower.isKeyDown(Keyboard.KEY_W) ) {
+        if (Mayflower.isKeyDown(Keyboard.KEY_UP) || Mayflower.isKeyDown(Keyboard.KEY_W)) {
             jump();
         }
 
@@ -162,7 +162,7 @@ public class Player extends AnimatedActor {
             }
             this.facing = Direction.RIGHT;
             accel();
-        } else if (Mayflower.isKeyDown(Keyboard.KEY_LEFT) || Mayflower.isKeyDown(Keyboard.KEY_A) ) {
+        } else if (Mayflower.isKeyDown(Keyboard.KEY_LEFT) || Mayflower.isKeyDown(Keyboard.KEY_A)) {
             if (isGrounded()) {
                 this.setAnimation("walkLeft");
             }

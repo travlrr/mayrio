@@ -40,13 +40,12 @@ public class SpriteSheet {
 
     static {
         logger = new MayrioLogger(SpriteSheet.class);
-        scaleFactor = 2;
+        scaleFactor = 1;
     }
 
     private Dimension spriteSize;
     private String path;
     private BufferedImage sheet;
-
     private ArrayList<MayflowerImage> sprites;
 
     /**
@@ -102,6 +101,31 @@ public class SpriteSheet {
     }
 
     /**
+     * Get a sprite from the sprite sheet
+     */
+    public MayflowerImage getSprite(int index) {
+        return sprites.get(index);
+    }
+
+    /**
+     * Get multiple sprites from the sprite sheet
+     */
+    public MayflowerImage[] getSprites(int... indexes) {
+        MayflowerImage[] ret = new MayflowerImage[indexes.length];
+        for (int i = 0; i < indexes.length; i++) {
+            ret[i] = sprites.get(i);
+        }
+        return ret;
+    }
+
+    /**
+     * Return the global sprite scale factor
+     */
+    public static int getScaleFactor() {
+        return SpriteSheet.scaleFactor;
+    }
+
+    /**
      * Check if a number is a power of 2.
      * Used to make sure scale factor doesn't make the sprites fit on the screen unevenly.
      */
@@ -115,30 +139,6 @@ public class SpriteSheet {
         }
 
         return n == 1;
-    }
-
-    /**
-     * Get a sprite from the sprite sheet
-     *
-     * @param index Index to get sprite from
-     * @return Sprite at the given index
-     */
-    public MayflowerImage getSprite(int index) {
-        return sprites.get(index);
-    }
-
-    /**
-     * Get multiple sprites from the sprite sheet
-     *
-     * @param indexes Indexes to get sprites from
-     * @return Sprites at the given indexes
-     */
-    public MayflowerImage[] getSprites(int... indexes) {
-        MayflowerImage[] ret = new MayflowerImage[indexes.length];
-        for (int i = 0; i < indexes.length; i++) {
-            ret[i] = sprites.get(i);
-        }
-        return ret;
     }
 
     /**

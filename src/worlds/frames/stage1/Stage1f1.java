@@ -18,17 +18,17 @@
 package worlds.frames.stage1;
 
 import worlds.core.Frame;
+import worlds.core.FramedWorld;
 import worlds.core.WorldBuilder;
 
 public class Stage1f1 extends Frame {
-    @Override
-    public void act() {
-
+    public Stage1f1(FramedWorld parent) {
+        super(parent);
     }
 
     @Override
     protected void init() {
-        WorldBuilder.setWorld(this);
+        WorldBuilder.setWorld(this.getParent());
         WorldBuilder.createFlatGround();
     }
 }

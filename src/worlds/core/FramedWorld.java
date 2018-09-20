@@ -19,60 +19,89 @@ package worlds.core;
 
 import actors.characters.Player;
 import actors.core.Direction;
+import mayflower.Actor;
 import mayflower.Mayflower;
-import mayflower.World;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
-public class FramedWorld extends World {
-    protected static ArrayList<Frame> frames;
+public class FramedWorld extends MayrioWorld {
+    private static ArrayList<Frame> frames;
     private int currentFrame;
-    private Player ply;
+    private Player player;
 
     protected FramedWorld(Player player) {
-        this.ply = player;
+        this.player = player;
+        frames = new ArrayList<>();
+        currentFrame = 0;
     }
 
     @Override
     public void act() {
-        if (getEdge().equals(Direction.RIGHT) && currentFrame + 1 < frames.size()) {
-            nextFrame();
-        }
-
-        if (getEdge().equals(Direction.LEFT) && currentFrame - 1 >= 0) {
-            previousFrame();
+        if (player != null && getPlyEdge() != null) {
+            if (getPlyEdge().equals(Direction.RIGHT) && currentFrame + 1 < frames.size()) {
+                nextFrame();
+            } else if (getPlyEdge().equals(Direction.LEFT) && currentFrame - 1 >= 0) {
+                previousFrame();
+            }
         }
     }
 
-    private Direction getEdge() {
-        if (ply.getEdge(Direction.RIGHT).x() >= this.getWidth()) {
-            return Direction.RIGHT;
-        } else if (ply.getEdge(Direction.LEFT).x() <= 0) {
-            return Direction.LEFT;
-        }
-        return null;
-    }
-
+    @Override
     public void init() {
         for (Frame frame : frames) {
             frame.init();
         }
     }
 
+    private Direction getPlyEdge() {
+        if (player.getEdge(Direction.RIGHT).x() >= this.getWidth()) {
+            return Direction.RIGHT;
+        } else if (player.getEdge(Direction.LEFT).x() <= 0) {
+            return Direction.LEFT;
+        }
+        assert false;
+        return null;
+    }
+
     private void nextFrame() {
         currentFrame++;
-        Mayflower.setWorld(frames.get(currentFrame));
+        setFrame(frames.get(currentFrame));
     }
 
     private void previousFrame() {
         currentFrame--;
-        if (currentFrame < 0) {
-            throw new IndexOutOfBoundsException();
-        }
-        Mayflower.setWorld(frames.get(currentFrame));
+        setFrame(frames.get(currentFrame));
     }
 
-    protected void registerFrame(Frame frame) {
-        frames.add(frame);
+    private void setFrame(Frame frame) {
+        Direction edge = getPlyEdge();
+
+        this.clear();
+        frame.init();
+
+        this.addObject(player, 0, player.getY());
+        double x;
+        assert edge != null;
+        if (edge.equals(Direction.RIGHT)) {
+            x = 1;
+        } else {
+            x = Mayflower.getWidth() - player.getImage().getWidth();
+        }
+        player.setLocation(x, player.getY());
+    }
+
+    private void clear() {
+        Iterator<Actor> iterator = this.getObjects().iterator();
+
+        while (iterator.hasNext()) {
+            Actor a = iterator.next();
+            iterator.remove();
+        }
+    }
+
+    protected void registerFrames(Frame... frameArray) {
+        frames.addAll(Arrays.asList(frameArray));
     }
 }

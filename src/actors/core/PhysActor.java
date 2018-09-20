@@ -134,7 +134,7 @@ public class PhysActor extends MayrioActor {
     /**
      * moves an object at a speed at a direction
      */
-    protected void moveDirect(int distance, Direction direction){
+    protected void moveDirect(int distance, Direction direction) {
         this.setRotation(direction.getAngle());
         super.move(distance);
     }

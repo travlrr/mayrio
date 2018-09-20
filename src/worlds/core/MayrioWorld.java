@@ -15,22 +15,12 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.core;
+package worlds.core;
 
-public class Projectile extends AnimatedActor {
+import mayflower.World;
 
-    private Direction direction;
+public abstract class MayrioWorld extends World {
+    public abstract void init();
 
-    Projectile (Direction direction){
-
-        this.direction = direction;
-
-    }
-
-    public void act(){
-
-        this.move(direction);
-
-    }
-
+    public abstract void act();
 }

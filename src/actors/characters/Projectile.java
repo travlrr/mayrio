@@ -15,20 +15,25 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds.frames.stage1;
+package actors.characters;
 
-import worlds.core.Frame;
-import worlds.core.FramedWorld;
-import worlds.core.WorldBuilder;
+import actors.core.AnimatedActor;
+import actors.core.Direction;
 
-public class Stage1f2 extends Frame {
-    public Stage1f2(FramedWorld parent) {
-        super(parent);
+public class Projectile extends AnimatedActor {
+
+    private Direction direction;
+
+    Projectile(Direction direction) {
+
+        this.direction = direction;
+
     }
 
-    @Override
-    protected void init() {
-        WorldBuilder.setWorld(this.getParent());
-        WorldBuilder.createPitfall(6, 7);
+    public void act() {
+
+        this.move(direction);
+
     }
+
 }

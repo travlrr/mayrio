@@ -15,20 +15,22 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.core;
+package actors.characters;
 
+import actors.core.Direction;
+import actors.core.PhysActor;
 import core.util.Timer;
 
 public class Cannon extends PhysActor {
 
-    private Timer t = new Timer(); //Timer variable, it is the frequency at which the bullets spawn
-    private int x = this.getX(); //Used to determine where the bullet should spawn
-    private int y = this.getY(); //Used to determine where the bullet should spawn
+    private Timer spawnTimer = new Timer();
+    private int x = this.getX();
+    private int y = this.getY();
     private Direction direction;
 
     public Cannon(Direction direction) {
         this.direction = direction;
-        t.set(3000);
+        spawnTimer.set(3000);
     }
 
     @Override
@@ -36,10 +38,11 @@ public class Cannon extends PhysActor {
 
         super.act();
 
-        if (t.isDone()) {
+        if (spawnTimer.isDone()) {
             Projectile bullet = new Projectile(direction);
+            int bx;
             bullet.setLocation(x - bullet.getImage().getWidth(), y);
-            t.reset();
+            spawnTimer.reset();
         }
     }
 
