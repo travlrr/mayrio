@@ -17,19 +17,23 @@
 
 package actors.characters;
 
-import actors.core.GroundType;
-import actors.core.StaticActor;
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
+import actors.core.AnimatedActor;
+import actors.core.Direction;
 
-public class Ground extends StaticActor {
-    private static SpriteSheet sheet;
+public class Projectile extends AnimatedActor {
 
-    static {
-        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
+    private Direction direction;
+
+    Projectile(Direction direction) {
+
+        this.direction = direction;
+
     }
 
-    public Ground(GroundType type) {
-        super(sheet.getSprite(type.getValue()), true);
+    public void act() {
+
+        this.move(direction);
+
     }
+
 }

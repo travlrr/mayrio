@@ -15,21 +15,19 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.characters;
+package worlds.core;
 
-import actors.core.GroundType;
-import actors.core.StaticActor;
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
+public abstract class Frame {
+    private static Frame instance;
+    private FramedWorld parent;
 
-public class Ground extends StaticActor {
-    private static SpriteSheet sheet;
-
-    static {
-        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
+    public Frame(FramedWorld parent) {
+        this.parent = parent;
     }
 
-    public Ground(GroundType type) {
-        super(sheet.getSprite(type.getValue()), true);
+    protected abstract void init();
+
+    protected FramedWorld getParent() {
+        return parent;
     }
 }

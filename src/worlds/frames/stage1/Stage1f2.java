@@ -15,15 +15,20 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds;
+package worlds.frames.stage1;
 
-import mayflower.World;
+import worlds.core.Frame;
+import worlds.core.FramedWorld;
+import worlds.core.WorldBuilder;
 
-public class Menu extends World {
-
+public class Stage1f2 extends Frame {
+    public Stage1f2(FramedWorld parent) {
+        super(parent);
+    }
 
     @Override
-    public void act() {
-
+    protected void init() {
+        WorldBuilder.setWorld(this.getParent());
+        WorldBuilder.createPitfall(6, 7);
     }
 }

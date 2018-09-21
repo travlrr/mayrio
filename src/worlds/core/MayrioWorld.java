@@ -15,21 +15,12 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package actors.characters;
+package worlds.core;
 
-import actors.core.GroundType;
-import actors.core.StaticActor;
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
+import mayflower.World;
 
-public class Ground extends StaticActor {
-    private static SpriteSheet sheet;
+public abstract class MayrioWorld extends World {
+    public abstract void init();
 
-    static {
-        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/ground.png");
-    }
-
-    public Ground(GroundType type) {
-        super(sheet.getSprite(type.getValue()), true);
-    }
+    public abstract void act();
 }

@@ -17,7 +17,33 @@
 
 package actors.characters;
 
+import actors.core.Direction;
 import actors.core.PhysActor;
+import core.util.Timer;
 
-public class Brick extends PhysActor {
+public class Cannon extends PhysActor {
+
+    private Timer spawnTimer = new Timer();
+    private int x = this.getX();
+    private int y = this.getY();
+    private Direction direction;
+
+    public Cannon(Direction direction) {
+        this.direction = direction;
+        spawnTimer.set(3000);
+    }
+
+    @Override
+    public void act() {
+
+        super.act();
+
+        if (spawnTimer.isDone()) {
+            Projectile bullet = new Projectile(direction);
+            int bx;
+            bullet.setLocation(x - bullet.getImage().getWidth(), y);
+            spawnTimer.reset();
+        }
+    }
+
 }

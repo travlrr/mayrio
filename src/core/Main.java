@@ -26,7 +26,8 @@ import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Mayflower;
-import worlds.ActorTestWorld;
+import worlds.Stage1;
+import worlds.core.MayrioWorld;
 
 public class Main extends Mayflower {
     private static final MayrioLogger logger;
@@ -37,7 +38,7 @@ public class Main extends Mayflower {
     }
 
     private Main() {
-        super("Mayrio", 512, 448);
+        super("Mayrio", 1024, 896);
     }
 
     public static void main(String[] args) {
@@ -50,27 +51,29 @@ public class Main extends Mayflower {
 
     @Override
     public void init() {
-        // Test code for SpriteSheet
-
         int width = Mayflower.getWidth();
         int height = Mayflower.getHeight();
-        int cellSize = 32;
+        int cellSize = 64;
+        int scaleMul = Mayflower.getWidth() / 256;
+
+        SpriteSheet.setScale(scaleMul);
 
         grid = Grid.getInstance(width, height, cellSize);
 
-        SpriteSheet.setScale(2);
         Player player = Player.get();
         Ground ground = new Ground(GroundType.MIDDLE);
         Coin coin = new Coin();
-        ActorTestWorld world = ActorTestWorld.get();
+
+        MayrioWorld world = new Stage1(player);
         world.init();
+
         MayrioLogger.setLevel(LogLevel.ALL);
 
         Mayflower.setWorld(world);
         Mayflower.showBounds(true);
-        Mayflower.showFPS(true);
+        Mayflower.showFPS(false);
 
-        Coordinate pos = grid.gridToScreen(6, 8);
+        Coordinate pos = grid.gridToScreen(4, 8);
         Coordinate gpos = grid.gridToScreen(8, 10);
         Coordinate cpos = grid.gridToScreen(8, 8);
         world.addObject(player, pos.x(), pos.y());

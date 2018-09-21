@@ -22,7 +22,7 @@ import mayflower.Actor;
 public class MayrioActor extends Actor {
     private boolean collides;
 
-    public boolean collides() {
+    boolean collides() {
         return collides;
     }
 
@@ -52,7 +52,7 @@ public class MayrioActor extends Actor {
             case LEFT:
                 return new Coordinate(x - (w / 2), y);
         }
-
+        assert false;
         return null;
     }
 

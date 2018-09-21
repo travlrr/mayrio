@@ -20,6 +20,7 @@ package actors.core;
 import core.util.log.MayrioLogger;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * The AnimationSet class provides an easy way to group and name Animations.
@@ -70,5 +71,24 @@ public class AnimationSet {
      */
     Animation getAnimation(String name) {
         return this.animations.get(name);
+    }
+
+    /**
+     * Check if this AnimationSet is equal to another.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AnimationSet)) {
+            return false;
+        }
+        return this.hashCode() == o.hashCode();
+    }
+
+    /**
+     * Get the hashcode for this AnimationSet.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(animations);
     }
 }

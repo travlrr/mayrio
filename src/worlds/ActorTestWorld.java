@@ -18,14 +18,17 @@
 package worlds;
 
 import actors.characters.Player;
-import core.WorldBuilder;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 import mayflower.Label;
-import mayflower.World;
+import mayflower.MayflowerImage;
+import worlds.core.MayrioWorld;
+import worlds.core.WorldBuilder;
 
 /**
  * Placeholder World for debugging
  */
-public class ActorTestWorld extends World {
+public class ActorTestWorld extends MayrioWorld {
     private static ActorTestWorld instance;
     private Label points;
 
@@ -39,11 +42,17 @@ public class ActorTestWorld extends World {
         return instance;
     }
 
+    @Override
     public void init() {
         WorldBuilder.setWorld(instance);
         WorldBuilder.createFlatGround();
+
         points = new Label("Points: 0", 24);
         instance.addObject(points, 128, 128);
+
+        SpriteSheet background = new SpriteSheet(new Dimension(512, 432), "/sprites/background.png");
+        MayflowerImage a = background.getSprite(0);
+        this.setBackground(background.getSprite(0));
     }
 
     @Override

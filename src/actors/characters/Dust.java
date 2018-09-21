@@ -25,15 +25,15 @@ import core.sprites.SpriteSheet;
 
 public class Dust extends AnimatedActor {
     private static SpriteSheet sheet;
-    private static Animation anim;
 
     static {
         sheet = new SpriteSheet(new Dimension(8, 8), "/sprites/dust.png");
-        anim = new Animation(10, sheet.getSprites(0, 1, 2, 3));
     }
 
+    private Animation anim;
+
     Dust() {
-        anim.reset();
+        anim = new Animation(10, sheet.getSprites(0, 1, 2, 3));
         this.setAnimation(anim);
         this.setCollides(false);
         this.setGravity(false);
