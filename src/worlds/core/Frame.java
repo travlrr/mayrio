@@ -17,8 +17,9 @@
 
 package worlds.core;
 
+import mayflower.Actor;
+
 public abstract class Frame {
-    private static Frame instance;
     private FramedWorld parent;
 
     public Frame(FramedWorld parent) {
@@ -32,5 +33,9 @@ public abstract class Frame {
      */
     protected FramedWorld getParent() {
         return parent;
+    }
+
+    protected void addObject(Actor a, int x, int y) {
+        this.parent.addObject(a, x, y);
     }
 }

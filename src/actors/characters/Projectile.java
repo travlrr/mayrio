@@ -18,22 +18,36 @@
 package actors.characters;
 
 import actors.core.AnimatedActor;
+import actors.core.Animation;
 import actors.core.Direction;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 
 public class Projectile extends AnimatedActor {
-
     private Direction direction;
+    private static SpriteSheet sheet;
+    private static Animation anim;
+
+    static {
+        sheet = new SpriteSheet(new Dimension(32, 16), "/sprites/hazard/cannon/projectile.png");
+        anim = new Animation(10, sheet.getSprites(0, 1));
+    }
+
 
     Projectile(Direction direction) {
-
         this.direction = direction;
-
+        this.setAnimation(anim);
+        this.setCollides(false);
+        this.setGravity(false);
     }
+
 
     public void act() {
-
         this.move(direction);
-
+        Player ply = getOneIntersectingObject(Player.class);
+        if (ply != null) {
+            this.getWorld().removeObject(this);
+            ply.hurt();
+        }
     }
-
 }
