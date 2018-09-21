@@ -201,7 +201,7 @@ public class Player extends AnimatedActor {
     /**
      * Damage the player.
      */
-    public void hurt() {
+    void hurt() {
         if (hurtTimer.getTimeLeft() > 0) {
             return;
         }
@@ -238,7 +238,9 @@ public class Player extends AnimatedActor {
         if (dead) {
             return;
         }
+
         dead = true;
+        lives--;
         this.setAnimation(death);
         this.setGravity(false);
         this.setCollides(false);

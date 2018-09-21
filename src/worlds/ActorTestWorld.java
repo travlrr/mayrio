@@ -18,9 +18,9 @@
 package worlds;
 
 import actors.characters.Player;
+import core.Main;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
-import mayflower.Label;
 import mayflower.MayflowerImage;
 import worlds.core.MayrioWorld;
 import worlds.core.WorldBuilder;
@@ -29,26 +29,10 @@ import worlds.core.WorldBuilder;
  * Placeholder World for debugging
  */
 public class ActorTestWorld extends MayrioWorld {
-    private static ActorTestWorld instance;
-    private Label points;
-
-    private ActorTestWorld() {
-    }
-
-    public static ActorTestWorld get() {
-        if (instance == null) {
-            instance = new ActorTestWorld();
-        }
-        return instance;
-    }
-
     @Override
     public void init() {
-        WorldBuilder.setWorld(instance);
+        WorldBuilder.setWorld(this);
         WorldBuilder.createFlatGround();
-
-        points = new Label("Points: 0", 24);
-        instance.addObject(points, 128, 128);
 
         SpriteSheet background = new SpriteSheet(new Dimension(512, 432), "/sprites/background.png");
         MayflowerImage a = background.getSprite(0);
@@ -57,7 +41,6 @@ public class ActorTestWorld extends MayrioWorld {
 
     @Override
     public void act() {
-        Player ply = this.getObjects(Player.class).get(0);
-        points.setText(String.format("Points: %d", ply.getPoints()));
+        Player ply = Main.getPlayer();
     }
 }

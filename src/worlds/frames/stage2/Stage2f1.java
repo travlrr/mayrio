@@ -15,28 +15,19 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds;
+package worlds.frames.stage2;
 
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
 import worlds.core.Frame;
 import worlds.core.FramedWorld;
-import worlds.frames.stage1.Stage1f1;
-import worlds.frames.stage1.Stage1f2;
 
-public class Stage1 extends FramedWorld {
+public class Stage2f1 extends Frame {
 
-    public Stage1() {
-        Frame f1 = new Stage1f1(this);
-        Frame f2 = new Stage1f2(this);
-        registerFrames(f1, f2);
-
-        SpriteSheet sheet = new SpriteSheet(new Dimension(512, 432), "/sprites/background.png");
-        this.setBackground(sheet.getSprite(0));
+    public Stage2f1(FramedWorld parent) {
+        super(parent);
     }
 
     @Override
-    public void act() {
-        super.act();
+    protected void init() {
+
     }
 }
