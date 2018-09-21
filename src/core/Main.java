@@ -69,7 +69,7 @@ public class Main extends Mayflower {
         grid = Grid.getInstance(width, height, cellSize);
         player = Player.get();
 
-        MayrioWorld world = new Stage1(player);
+        MayrioWorld world = new Stage1();
         world.init();
 
         MayrioLogger.setLevel(LogLevel.ALL);
