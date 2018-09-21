@@ -27,6 +27,9 @@ public abstract class Frame {
 
     protected abstract void init();
 
+    /**
+     * Get this Frame's parent FrameWorld.
+     */
     protected FramedWorld getParent() {
         return parent;
     }
