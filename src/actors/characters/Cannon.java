@@ -19,25 +19,33 @@ package actors.characters;
 
 import actors.core.Direction;
 import actors.core.PhysActor;
+import actors.core.StaticActor;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 import core.util.Timer;
 
-public class Cannon extends PhysActor {
+public class Cannon extends StaticActor {
+    private static SpriteSheet sheet;
 
     private Timer spawnTimer = new Timer();
     private int x = this.getX();
     private int y = this.getY();
     private Direction direction;
 
+    static {
+        sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/hazard/cannon/cannon.png");
+    }
+
     public Cannon(Direction direction) {
+        super(sheet.getSprite(0), true);
+
         this.direction = direction;
         spawnTimer.set(3000);
     }
 
     @Override
     public void act() {
-
         super.act();
-
         if (spawnTimer.isDone()) {
             Projectile bullet = new Projectile(direction);
             int bx;
@@ -45,5 +53,4 @@ public class Cannon extends PhysActor {
             spawnTimer.reset();
         }
     }
-
 }

@@ -19,6 +19,7 @@ package worlds.core;
 
 import actors.characters.Player;
 import actors.core.Direction;
+import core.Main;
 import mayflower.Actor;
 import mayflower.Mayflower;
 
@@ -27,12 +28,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class FramedWorld extends MayrioWorld {
-    private static ArrayList<Frame> frames;
+    private ArrayList<Frame> frames;
     private int currentFrame;
     private Player player;
 
-    protected FramedWorld(Player player) {
-        this.player = player;
+    protected FramedWorld() {
+        this.player = Main.getPlayer();
         frames = new ArrayList<>();
         currentFrame = 0;
     }
@@ -55,26 +56,37 @@ public class FramedWorld extends MayrioWorld {
         }
     }
 
+    /**
+     * Get the edge of the screen the player is on, assuming they're on an edge
+     */
     private Direction getPlyEdge() {
         if (player.getEdge(Direction.RIGHT).x() >= this.getWidth()) {
             return Direction.RIGHT;
         } else if (player.getEdge(Direction.LEFT).x() <= 0) {
             return Direction.LEFT;
         }
-        assert false;
         return null;
     }
 
+    /**
+     * Switch to the next frame
+     */
     private void nextFrame() {
         currentFrame++;
         setFrame(frames.get(currentFrame));
     }
 
+    /**
+     * Switch to the previous frame
+     */
     private void previousFrame() {
         currentFrame--;
         setFrame(frames.get(currentFrame));
     }
 
+    /**
+     * Set the frame to the given frame
+     */
     private void setFrame(Frame frame) {
         Direction edge = getPlyEdge();
 
@@ -92,15 +104,23 @@ public class FramedWorld extends MayrioWorld {
         player.setLocation(x, player.getY());
     }
 
+    /**
+     * Clear the World
+     */
     private void clear() {
         Iterator<Actor> iterator = this.getObjects().iterator();
 
         while (iterator.hasNext()) {
-            Actor a = iterator.next();
+            iterator.next();
             iterator.remove();
         }
     }
 
+    /**
+     * Register frames to this FramedWorld.
+     *
+     * @param frameArray Frames to add, in order
+     */
     protected void registerFrames(Frame... frameArray) {
         frames.addAll(Arrays.asList(frameArray));
     }

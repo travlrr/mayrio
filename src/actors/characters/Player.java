@@ -22,6 +22,7 @@ import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 import core.util.ImageUtils;
 import core.util.Timer;
+import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
@@ -49,6 +50,7 @@ public class Player extends AnimatedActor {
     private boolean shroomed;
     private boolean dead;
     private int points;
+    private int lives;
 
     private Player() {
         // Instance variables
@@ -57,6 +59,9 @@ public class Player extends AnimatedActor {
         this.facing = Direction.RIGHT;
         this.shroomed = false;
         this.points = 0;
+        this.lives = 5;
+
+        // Movement variables
         this.setMaxSpeedX(6);
         this.setMaxSpeedY(10);
 
@@ -127,7 +132,7 @@ public class Player extends AnimatedActor {
         }
 
         // Die if below world
-        if (this.getY() > this.getWorld().getHeight()) {
+        if (this.getY() > Mayflower.getHeight()) {
             this.kill();
         }
 
@@ -192,6 +197,25 @@ public class Player extends AnimatedActor {
         this.move(facing);
     }
 
+
+    /**
+     * Damage the player.
+     */
+    void hurt() {
+        if (hurtTimer.getTimeLeft() > 0) {
+            return;
+        }
+
+        hurtTimer.set(1000);
+
+        if (shroomed) {
+            shroomed = false;
+            this.setAnimationSet(set_sm);
+        } else {
+            kill();
+        }
+    }
+
     /**
      * Called when switching directions. Spawns a Dust object and sets speed to 1/4.
      */
@@ -207,32 +231,32 @@ public class Player extends AnimatedActor {
         this.setSpeedX(getSpeedX() / 4);
     }
 
-    public void hurt() {
-        if (hurtTimer.getTimeLeft() > 0) {
+    /**
+     * Kill the player instantly.
+     */
+    private void kill() {
+        if (dead) {
             return;
         }
 
-        hurtTimer.set(1000);
-
-        if (shroomed) {
-            shroomed = false;
-            this.setAnimationSet(set_sm);
-        } else {
-            kill();
-        }
-    }
-
-    private void kill() {
         dead = true;
+        lives--;
         this.setAnimation(death);
         this.setGravity(false);
         this.setCollides(false);
+        logger.logf(LogLevel.INFO, "Player died! %d lives left.", lives);
     }
 
+    /**
+     * Add a point.
+     */
     void addPoint() {
         points++;
     }
 
+    /**
+     * Return the player's point count.
+     */
     public int getPoints() {
         return points;
     }

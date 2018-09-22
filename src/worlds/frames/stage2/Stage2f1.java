@@ -15,27 +15,19 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds.core;
+package worlds.frames.stage2;
 
-import mayflower.Actor;
+import worlds.core.Frame;
+import worlds.core.FramedWorld;
 
-public abstract class Frame {
-    private FramedWorld parent;
+public class Stage2f1 extends Frame {
 
-    public Frame(FramedWorld parent) {
-        this.parent = parent;
+    public Stage2f1(FramedWorld parent) {
+        super(parent);
     }
 
-    protected abstract void init();
+    @Override
+    protected void init() {
 
-    /**
-     * Get this Frame's parent FrameWorld.
-     */
-    protected FramedWorld getParent() {
-        return parent;
-    }
-
-    protected void addObject(Actor a, int x, int y) {
-        this.parent.addObject(a, x, y);
     }
 }

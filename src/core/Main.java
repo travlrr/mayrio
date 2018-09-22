@@ -17,11 +17,8 @@
 
 package core;
 
-import actors.characters.Coin;
-import actors.characters.Ground;
 import actors.characters.Player;
 import actors.core.Coordinate;
-import actors.core.GroundType;
 import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
@@ -32,6 +29,7 @@ import worlds.core.MayrioWorld;
 public class Main extends Mayflower {
     private static final MayrioLogger logger;
     private static Grid grid;
+    private static Player player;
 
     static {
         logger = new MayrioLogger(Main.class);
@@ -45,8 +43,18 @@ public class Main extends Mayflower {
         new Main();
     }
 
+    /**
+     * Get the Grid.
+     */
     public static Grid getGrid() {
         return grid;
+    }
+
+    /**
+     * Get the Player.
+     */
+    public static Player getPlayer() {
+        return player;
     }
 
     @Override
@@ -59,12 +67,9 @@ public class Main extends Mayflower {
         SpriteSheet.setScale(scaleMul);
 
         grid = Grid.getInstance(width, height, cellSize);
+        player = Player.get();
 
-        Player player = Player.get();
-        Ground ground = new Ground(GroundType.MIDDLE);
-        Coin coin = new Coin();
-
-        MayrioWorld world = new Stage1(player);
+        MayrioWorld world = new Stage1();
         world.init();
 
         MayrioLogger.setLevel(LogLevel.ALL);
@@ -77,7 +82,5 @@ public class Main extends Mayflower {
         Coordinate gpos = grid.gridToScreen(8, 10);
         Coordinate cpos = grid.gridToScreen(8, 8);
         world.addObject(player, pos.x(), pos.y());
-        world.addObject(ground, gpos.x(), gpos.y());
-        world.addObject(coin, cpos.x(), cpos.y());
     }
 }
