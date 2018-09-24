@@ -35,21 +35,18 @@ public class FramedWorld extends MayrioWorld {
     private Player player;
 
     protected FramedWorld() {
-        this.player = Main.getPlayer();
         frames = new ArrayList<>();
-        currentFrame = 0;
+        this.player = Main.getPlayer();
     }
 
     @Override
     public void init() {
+        currentFrame = 0;
         super.init();
-        for (Frame frame : frames) {
-            frame.init();
-        }
-        Grid grid = Main.getGrid();
         Player player = Main.getPlayer();
-        Coordinate spawnPos = grid.gridToScreen(4, 9);
+        Coordinate spawnPos = Grid.toScreen(4, 9);
         addObject(player, spawnPos.x(), spawnPos.y());
+        frames.get(0).init();
     }
 
     @Override
@@ -122,6 +119,8 @@ public class FramedWorld extends MayrioWorld {
             iterator.next();
             iterator.remove();
         }
+
+        super.addUi();
     }
 
     /**

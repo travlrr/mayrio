@@ -44,8 +44,8 @@ public class Grid {
         Grid.width = width;
         Grid.height = height;
         Grid.cellSize = cellSize;
-        Grid.cellCountX = width / cellSize;
-        Grid.cellCountY = height / cellSize;
+        Grid.cellCountX = Grid.width / cellSize;
+        Grid.cellCountY = Grid.height / cellSize;
         Grid.gridToScreen = new HashMap<>();
 
         if (width % cellSize != 0 | height % cellSize != 0) {
@@ -64,7 +64,7 @@ public class Grid {
         }
     }
 
-    public static Grid getInstance(int width, int height, int cellSize) {
+    public static Grid set(int width, int height, int cellSize) {
         if (instance == null) {
             instance = new Grid(width, height, cellSize);
         }
@@ -72,16 +72,16 @@ public class Grid {
         return instance;
     }
 
-    public Coordinate gridToScreen(int x, int y) {
+    public static Coordinate toScreen(int x, int y) {
         Coordinate coord = new Coordinate(x, y);
         return gridToScreen.get(coord);
     }
 
-    public int getCellsX() {
+    public static int getCellsX() {
         return cellCountX;
     }
 
-    public int getCellsY() {
+    public static int getCellsY() {
         return cellCountY;
     }
 }

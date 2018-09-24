@@ -95,15 +95,15 @@ public class PhysActor extends MayrioActor {
         double overlap_x = Math.max(0, Math.min(right1, right2) - Math.max(left1, left2));
         double overlap_y = Math.max(0, Math.min(bottom1, bottom2) - Math.max(top1, top2));
 
-        if (other instanceof Ground) {
-            overlap_x = 0;
+        if (overlap_x <= 0 || overlap_y <= 0) {
+            return;
         }
 
         if (Math.abs(overlap_y - other.getImage().getHeight()) < 2) {
             overlap_y = 0;
         }
 
-        this.setLocation(getX() - overlap_x, getY() - overlap_y);
+        this.setLocation(getX() + overlap_x, getY() - overlap_y);
     }
 
     /**

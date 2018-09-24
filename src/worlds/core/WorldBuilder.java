@@ -22,17 +22,11 @@ import actors.core.Coordinate;
 import actors.core.GroundType;
 import actors.core.MayrioActor;
 import core.Grid;
-import core.Main;
 import mayflower.Mayflower;
 import mayflower.World;
 
 public class WorldBuilder {
-    private static Grid grid;
     private static World world;
-
-    static {
-        WorldBuilder.grid = Main.getGrid();
-    }
 
     public static void setWorld(World world) {
         WorldBuilder.world = world;
@@ -42,10 +36,10 @@ public class WorldBuilder {
      * Creates flat ground
      */
     public static void createFlatGround() {
-        for (int x = 0; x < grid.getCellsX(); x++) {
+        for (int x = 0; x < Grid.getCellsX(); x++) {
             Ground ground1 = new Ground(GroundType.FLAT_TOP);
             Ground ground2 = new Ground(GroundType.MIDDLE);
-            Coordinate coords = grid.gridToScreen(x, 0);
+            Coordinate coords = Grid.toScreen(x, 0);
             world.addObject(ground1, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 3);
             world.addObject(ground2, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 2);
         }
@@ -58,13 +52,13 @@ public class WorldBuilder {
      * @param endCell   Cell to end the pitfall at
      */
     public static void createPitfall(int startCell, int endCell) {
-        for (int x = 0; x < grid.getCellsX(); x++) {
+        for (int x = 0; x < Grid.getCellsX(); x++) {
             if (x >= startCell && x <= endCell) {
                 continue;
             }
             Ground ground1 = new Ground(GroundType.FLAT_TOP);
             Ground ground2 = new Ground(GroundType.MIDDLE);
-            Coordinate coords = grid.gridToScreen(x, 0);
+            Coordinate coords = Grid.toScreen(x, 0);
             world.addObject(ground1, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 3);
             world.addObject(ground2, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 2);
         }

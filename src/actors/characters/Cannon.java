@@ -41,7 +41,7 @@ public class Cannon extends StaticActor {
     public Cannon(Direction direction) {
         super(sheet.getSprite(0), false);
         this.direction = direction;
-        spawnTimer.set(4000);
+        spawnTimer.set(2500);
     }
 
     @Override

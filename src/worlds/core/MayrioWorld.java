@@ -18,6 +18,7 @@
 package worlds.core;
 
 import actors.characters.*;
+import actors.core.Coordinate;
 import actors.core.TextActor;
 import core.Main;
 import mayflower.Actor;
@@ -40,10 +41,7 @@ public class MayrioWorld extends World {
             iterator.remove();
         }
 
-        points = new TextActor("Points: 0", 32);
-        lives = new TextActor("Lives: 5", 32);
-        this.addObject(points, 16, 0);
-        this.addObject(lives, getWidth() - 16 - lives.getImage().getWidth(), 0);
+        this.addUi();
     }
 
     @Override
@@ -52,5 +50,16 @@ public class MayrioWorld extends World {
             points.setText(String.format("Points: %d", Main.getPlayer().getPoints()));
             lives.setText(String.format("Lives: %d", Main.getPlayer().getLives()));
         }
+    }
+
+    protected void addUi() {
+        points = new TextActor("Points: 0", 32);
+        lives = new TextActor("Lives: 5", 32);
+        this.addObject(points, 16, 0);
+        this.addObject(lives, getWidth() - 16 - lives.getImage().getWidth(), 0);
+    }
+
+    public void addObject(Actor object, Coordinate pos) {
+        super.addObject(object, pos.x(), pos.y());
     }
 }

@@ -17,6 +17,7 @@
 
 package worlds.core;
 
+import actors.core.Coordinate;
 import mayflower.Actor;
 
 public abstract class Frame {
@@ -35,7 +36,11 @@ public abstract class Frame {
         return parent;
     }
 
-    protected void addObject(Actor a, int x, int y) {
-        this.parent.addObject(a, x, y);
+    protected void addObject(Actor object, int x, int y) {
+        this.parent.addObject(object, x, y);
+    }
+
+    protected void addObject(Actor object, Coordinate pos) {
+        this.parent.addObject(object, pos);
     }
 }

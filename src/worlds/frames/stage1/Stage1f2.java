@@ -17,10 +17,16 @@
 
 package worlds.frames.stage1;
 
+import actors.characters.Cannon;
+import actors.core.Direction;
+import core.Grid;
 import worlds.core.Frame;
 import worlds.core.FramedWorld;
 import worlds.core.WorldBuilder;
 
+/**
+ * Frame 2 of stage 1
+ */
 public class Stage1f2 extends Frame {
     public Stage1f2(FramedWorld parent) {
         super(parent);
@@ -30,5 +36,7 @@ public class Stage1f2 extends Frame {
     protected void init() {
         WorldBuilder.setWorld(this.getParent());
         WorldBuilder.createPitfall(6, 7);
+        Cannon cannon = new Cannon(Direction.LEFT);
+        addObject(cannon, Grid.toScreen(12, 9));
     }
 }

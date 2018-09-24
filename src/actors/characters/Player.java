@@ -67,7 +67,7 @@ public class Player extends AnimatedActor {
 
         // Movement variables
         this.setMaxSpeedX(6);
-        this.setMaxSpeedY(10);
+        this.setMaxSpeedY(14);
 
         // Small Mario animations
         Animation sm_idleRight = new StaticAnimation(mario_sm.getSprite(0)).mirrorHorizontal();
@@ -200,7 +200,7 @@ public class Player extends AnimatedActor {
             }
         } else {
             this.slow();
-            if (this.getSpeedX() == 0) {
+            if (this.getSpeedX() == 0 && this.getSpeedY() == 0) {
                 if (facing.equals(Direction.LEFT)) {
                     this.setAnimation("idleLeft");
                 } else if (facing.equals(Direction.RIGHT)) {
@@ -235,7 +235,7 @@ public class Player extends AnimatedActor {
      * Called when switching directions. Spawns a Dust object and sets speed to 1/4.
      */
     private void turn() {
-        if (isGrounded()) {
+        if (getSpeedY() == 0) {
             Dust dust = new Dust();
             int x = this.getX() + this.getImage().getWidth() / 2;
             int y = this.getY() + this.getImage().getHeight();

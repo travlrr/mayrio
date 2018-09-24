@@ -26,7 +26,6 @@ import worlds.Stage1;
 import worlds.core.MayrioWorld;
 
 public class Main extends Mayflower {
-    private static Grid grid;
     private static Player player;
 
     private Main() {
@@ -35,13 +34,6 @@ public class Main extends Mayflower {
 
     public static void main(String[] args) {
         new Main();
-    }
-
-    /**
-     * Get the Grid.
-     */
-    public static Grid getGrid() {
-        return grid;
     }
 
     /**
@@ -59,7 +51,7 @@ public class Main extends Mayflower {
         int scaleMul = Mayflower.getWidth() / 256;
         SpriteSheet.setScale(scaleMul);
 
-        grid = Grid.getInstance(width, height, cellSize);
+        Grid.set(width, height, cellSize);
         player = Player.get();
 
         MayrioLogger.setLevel(LogLevel.ALL);

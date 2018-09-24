@@ -21,6 +21,9 @@ import worlds.core.Frame;
 import worlds.core.FramedWorld;
 import worlds.core.WorldBuilder;
 
+/**
+ * Frame 1 of stage 1
+ */
 public class Stage1f1 extends Frame {
     public Stage1f1(FramedWorld parent) {
         super(parent);
