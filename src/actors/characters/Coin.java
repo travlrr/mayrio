@@ -22,6 +22,9 @@ import actors.core.Animation;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
+/**
+ * A coin. Adds points.
+ */
 public class Coin extends AnimatedActor {
     private static SpriteSheet sheet;
     private static Animation anim;

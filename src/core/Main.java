@@ -18,7 +18,6 @@
 package core;
 
 import actors.characters.Player;
-import actors.core.Coordinate;
 import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
@@ -27,13 +26,8 @@ import worlds.Stage1;
 import worlds.core.MayrioWorld;
 
 public class Main extends Mayflower {
-    private static final MayrioLogger logger;
     private static Grid grid;
     private static Player player;
-
-    static {
-        logger = new MayrioLogger(Main.class);
-    }
 
     private Main() {
         super("Mayrio", 1024, 896);
@@ -63,24 +57,18 @@ public class Main extends Mayflower {
         int height = Mayflower.getHeight();
         int cellSize = 64;
         int scaleMul = Mayflower.getWidth() / 256;
-
         SpriteSheet.setScale(scaleMul);
 
         grid = Grid.getInstance(width, height, cellSize);
         player = Player.get();
 
+        MayrioLogger.setLevel(LogLevel.ALL);
         MayrioWorld world = new Stage1();
         world.init();
 
-        MayrioLogger.setLevel(LogLevel.ALL);
 
         Mayflower.setWorld(world);
-        Mayflower.showBounds(true);
+        Mayflower.showBounds(false);
         Mayflower.showFPS(false);
-
-        Coordinate pos = grid.gridToScreen(4, 8);
-        Coordinate gpos = grid.gridToScreen(8, 10);
-        Coordinate cpos = grid.gridToScreen(8, 8);
-        world.addObject(player, pos.x(), pos.y());
     }
 }

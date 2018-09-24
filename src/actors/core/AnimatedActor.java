@@ -18,18 +18,11 @@
 package actors.core;
 
 import core.util.AnimationTimer;
-import core.util.log.MayrioLogger;
 
 /**
  * AnimatedActor is a further extension of PhysActor that adds animation capabilities.
  */
 public class AnimatedActor extends PhysActor {
-    private static final MayrioLogger logger;
-
-    static {
-        logger = new MayrioLogger(AnimatedActor.class);
-    }
-
     private AnimationSet animations;
     private Animation currentAnimation;
     private AnimationTimer animTimer;
@@ -41,17 +34,22 @@ public class AnimatedActor extends PhysActor {
     @Override
     public void act() {
         super.act();
-        long time = animTimer.getTimeLeft();
         if (animTimer.getTimeLeft() <= 0 && currentAnimation != null) {
             this.setImage(currentAnimation.getNextFrame());
             animTimer.reset();
         }
     }
 
+    /**
+     * Get the current AnimationSet for this AnimatedActor
+     */
     protected AnimationSet getAnimations() {
         return this.animations;
     }
 
+    /**
+     * Set current animation by name, assuming it exists in the AnimationSet
+     */
     protected void setAnimation(String name) {
         if (this.getCurrentAnimation() == null || !this.getCurrentAnimation().equals(getAnimation(name))) {
             this.currentAnimation = animations.getAnimation(name);
@@ -60,6 +58,9 @@ public class AnimatedActor extends PhysActor {
         }
     }
 
+    /**
+     * Set current animation
+     */
     protected void setAnimation(Animation anim) {
         if (this.getCurrentAnimation() == null || !this.getCurrentAnimation().equals(anim)) {
             this.currentAnimation = anim;
@@ -68,15 +69,24 @@ public class AnimatedActor extends PhysActor {
         }
     }
 
+    /**
+     * Set the current AnimationSet
+     */
     protected void setAnimationSet(AnimationSet animations) {
         this.animations = animations;
     }
 
-    protected Animation getCurrentAnimation() {
-        return this.currentAnimation;
-    }
-
+    /**
+     * Get an animation from the current AnimationSet
+     */
     private Animation getAnimation(String name) {
         return animations.getAnimation(name);
+    }
+
+    /**
+     * Get the current Animation
+     */
+    protected Animation getCurrentAnimation() {
+        return this.currentAnimation;
     }
 }

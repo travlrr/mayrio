@@ -34,7 +34,7 @@ public class PhysActor extends MayrioActor {
     private boolean grounded;
     private boolean gravity;
 
-    protected PhysActor() {
+    PhysActor() {
         this.maxSpeedX = 1;
         this.maxSpeedY = 1;
         this.gravity = true;
@@ -83,9 +83,6 @@ public class PhysActor extends MayrioActor {
     }
 
     private void collide(MayrioActor other) {
-        this.turnTowards(other);
-        this.turn(180);
-
         double left1 = this.getEdge(Direction.LEFT).dx();
         double left2 = other.getEdge(Direction.LEFT).dx();
         double right1 = this.getEdge(Direction.RIGHT).dx();
@@ -107,10 +104,6 @@ public class PhysActor extends MayrioActor {
         }
 
         this.setLocation(getX() - overlap_x, getY() - overlap_y);
-
-        double x = this.getCenterX() - 16;
-        //double y = this.getCenterY() - 16 + this.getImage().getHeight()/2;
-        double y = this.getEdge(Direction.DOWN).dy() - 16;
     }
 
     /**

@@ -17,11 +17,6 @@
 
 package worlds.frames.stage1;
 
-import actors.characters.Cannon;
-import actors.core.Coordinate;
-import actors.core.Direction;
-import core.Grid;
-import core.Main;
 import worlds.core.Frame;
 import worlds.core.FramedWorld;
 import worlds.core.WorldBuilder;
@@ -35,10 +30,5 @@ public class Stage1f1 extends Frame {
     protected void init() {
         WorldBuilder.setWorld(this.getParent());
         WorldBuilder.createFlatGround();
-
-        Grid grid = Main.getGrid();
-        Coordinate pos = grid.gridToScreen(5, 7);
-        Cannon c = new Cannon(Direction.LEFT);
-        addObject(c, pos.x(), pos.y());
     }
 }

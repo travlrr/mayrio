@@ -22,6 +22,9 @@ import actors.core.StaticActor;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
+/**
+ * Ground blocks. Self-explanatory.
+ */
 public class Ground extends StaticActor {
     private static SpriteSheet sheet;
 

@@ -18,6 +18,7 @@
 package actors.core;
 
 import mayflower.Actor;
+import worlds.core.MayrioWorld;
 
 public class MayrioActor extends Actor {
     private boolean collides;
@@ -58,5 +59,10 @@ public class MayrioActor extends Actor {
 
     @Override
     public void act() {
+    }
+
+    @Override
+    public MayrioWorld getWorld() {
+        return (MayrioWorld) super.getWorld();
     }
 }

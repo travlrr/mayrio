@@ -23,7 +23,7 @@ import core.util.log.MayrioLogger;
 import mayflower.MayflowerImage;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class SpriteSheet {
             }
         }
 
-        logger.logf(LogLevel.DEBUG, "SpriteSheet from source \"%s\" constructed, %dx%d, %d sprites added in total", sheetPath, sprites.size(), spriteSize.getWidth(), spriteSize.getHeight());
+        logger.logf(LogLevel.DEBUG, "SpriteSheet from source \"%s\" constructed, %dx%d, %d sprites added in total", sheetPath, spriteSize.getWidth(), spriteSize.getHeight(), sprites.size());
     }
 
     /**
@@ -98,24 +98,6 @@ public class SpriteSheet {
             throw new IllegalArgumentException("Scale passed to SpriteSheet.setScale is not a power of 2!");
         }
         SpriteSheet.scaleFactor = scale;
-    }
-
-    /**
-     * Get a sprite from the sprite sheet
-     */
-    public MayflowerImage getSprite(int index) {
-        return sprites.get(index);
-    }
-
-    /**
-     * Get multiple sprites from the sprite sheet
-     */
-    public MayflowerImage[] getSprites(int... indexes) {
-        MayflowerImage[] ret = new MayflowerImage[indexes.length];
-        for (int i = 0; i < indexes.length; i++) {
-            ret[i] = sprites.get(i);
-        }
-        return ret;
     }
 
     /**
@@ -139,6 +121,24 @@ public class SpriteSheet {
         }
 
         return n == 1;
+    }
+
+    /**
+     * Get a sprite from the sprite sheet
+     */
+    public MayflowerImage getSprite(int index) {
+        return sprites.get(index);
+    }
+
+    /**
+     * Get multiple sprites from the sprite sheet
+     */
+    public MayflowerImage[] getSprites(int... indexes) {
+        MayflowerImage[] ret = new MayflowerImage[indexes.length];
+        for (int i = 0; i < indexes.length; i++) {
+            ret[i] = sprites.get(i);
+        }
+        return ret;
     }
 
     /**

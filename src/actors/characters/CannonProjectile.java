@@ -23,18 +23,21 @@ import actors.core.Direction;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
-public class Projectile extends AnimatedActor {
-    private Direction direction;
+/**
+ * Bullet fired out of a Cannon.
+ */
+public class CannonProjectile extends AnimatedActor {
     private static SpriteSheet sheet;
-    private static Animation anim;
 
     static {
         sheet = new SpriteSheet(new Dimension(32, 16), "/sprites/hazard/cannon/projectile.png");
-        anim = new Animation(10, sheet.getSprites(0, 1));
     }
 
+    private Direction direction;
+    private Animation anim;
 
-    Projectile(Direction direction) {
+    CannonProjectile(Direction direction) {
+        anim = new Animation(20, sheet.getSprites(0, 1)).mirrorHorizontal().mirrorVertical();
         this.direction = direction;
         this.setAnimation(anim);
         this.setCollides(false);
@@ -43,10 +46,10 @@ public class Projectile extends AnimatedActor {
 
 
     public void act() {
-        this.move(direction);
+        super.act();
+        this.moveDirect(4, direction);
         Player ply = getOneIntersectingObject(Player.class);
-        if (ply != null) {
-            this.getWorld().removeObject(this);
+        if (ply != null && !ply.isCrouching()) {
             ply.hurt();
         }
     }

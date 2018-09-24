@@ -41,13 +41,10 @@ import mayflower.MayflowerImage;
  * These are ideal for ground tiles, backgrounds, and the like.
  */
 public class StaticActor extends MayrioActor {
-    private MayflowerImage sprite;
-    private boolean collides;
 
     public StaticActor(MayflowerImage sprite, boolean enableCollision) {
-        this.sprite = sprite;
-        this.setCollides(enableCollision);
         this.setImage(sprite);
+        this.setCollides(enableCollision);
     }
 
     @Override

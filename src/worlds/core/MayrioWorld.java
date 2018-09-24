@@ -17,10 +17,40 @@
 
 package worlds.core;
 
+import actors.characters.*;
+import actors.core.TextActor;
+import core.Main;
+import mayflower.Actor;
 import mayflower.World;
 
-public abstract class MayrioWorld extends World {
-    public abstract void init();
+import java.util.Iterator;
 
-    public abstract void act();
+public class MayrioWorld extends World {
+    private TextActor points;
+    private TextActor lives;
+
+    public MayrioWorld() {
+        this.setPaintOrder(Ground.class, Player.class, Dust.class, Cannon.class, CannonProjectile.class);
+    }
+
+    public void init() {
+        Iterator<Actor> iterator = this.getObjects().iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+
+        points = new TextActor("Points: 0", 32);
+        lives = new TextActor("Lives: 5", 32);
+        this.addObject(points, 16, 0);
+        this.addObject(lives, getWidth() - 16 - lives.getImage().getWidth(), 0);
+    }
+
+    @Override
+    public void act() {
+        if (!(points == null) && !(lives == null)) {
+            points.setText(String.format("Points: %d", Main.getPlayer().getPoints()));
+            lives.setText(String.format("Lives: %d", Main.getPlayer().getLives()));
+        }
+    }
 }

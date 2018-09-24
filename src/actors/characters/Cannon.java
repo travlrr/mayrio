@@ -18,38 +18,41 @@
 package actors.characters;
 
 import actors.core.Direction;
-import actors.core.PhysActor;
 import actors.core.StaticActor;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 import core.util.Timer;
 
+/**
+ * A formidable hazard. Fires a bullet at a regular interval.
+ */
 public class Cannon extends StaticActor {
     private static SpriteSheet sheet;
-
-    private Timer spawnTimer = new Timer();
-    private int x = this.getX();
-    private int y = this.getY();
-    private Direction direction;
 
     static {
         sheet = new SpriteSheet(new Dimension(16, 32), "/sprites/hazard/cannon/cannon.png");
     }
 
-    public Cannon(Direction direction) {
-        super(sheet.getSprite(0), true);
+    private Timer spawnTimer = new Timer();
+    private int x;
+    private int y;
+    private Direction direction;
 
+    public Cannon(Direction direction) {
+        super(sheet.getSprite(0), false);
         this.direction = direction;
-        spawnTimer.set(3000);
+        spawnTimer.set(4000);
     }
 
     @Override
     public void act() {
         super.act();
         if (spawnTimer.isDone()) {
-            Projectile bullet = new Projectile(direction);
-            int bx;
-            bullet.setLocation(x - bullet.getImage().getWidth(), y);
+            x = this.getX();
+            y = this.getY();
+
+            CannonProjectile bullet = new CannonProjectile(direction);
+            this.getWorld().addObject(bullet, x - bullet.getImage().getWidth(), y);
             spawnTimer.reset();
         }
     }

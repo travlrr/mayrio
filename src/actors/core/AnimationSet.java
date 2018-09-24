@@ -17,8 +17,6 @@
 
 package actors.core;
 
-import core.util.log.MayrioLogger;
-
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -26,12 +24,6 @@ import java.util.Objects;
  * The AnimationSet class provides an easy way to group and name Animations.
  */
 public class AnimationSet {
-    private static final MayrioLogger logger;
-
-    static {
-        logger = new MayrioLogger(AnimationSet.class);
-    }
-
     private HashMap<String, Animation> animations;
 
     /**
@@ -69,7 +61,7 @@ public class AnimationSet {
      * @param name Name of animation to get
      * @return Animation, if it exists
      */
-    Animation getAnimation(String name) {
+    public Animation getAnimation(String name) {
         return this.animations.get(name);
     }
 

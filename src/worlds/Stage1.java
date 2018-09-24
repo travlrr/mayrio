@@ -39,4 +39,9 @@ public class Stage1 extends FramedWorld {
     public void act() {
         super.act();
     }
+
+    @Override
+    public void init() {
+        super.init();
+    }
 }

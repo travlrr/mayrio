@@ -23,6 +23,9 @@ import actors.core.Direction;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
+/**
+ * A small animated sprite that's displayed when Mario rapidly switches direction.
+ */
 public class Dust extends AnimatedActor {
     private static SpriteSheet sheet;
 

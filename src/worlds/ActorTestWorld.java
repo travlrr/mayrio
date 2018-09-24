@@ -31,6 +31,7 @@ import worlds.core.WorldBuilder;
 public class ActorTestWorld extends MayrioWorld {
     @Override
     public void init() {
+        super.init();
         WorldBuilder.setWorld(this);
         WorldBuilder.createFlatGround();
 
@@ -41,6 +42,7 @@ public class ActorTestWorld extends MayrioWorld {
 
     @Override
     public void act() {
+        super.act();
         Player ply = Main.getPlayer();
     }
 }

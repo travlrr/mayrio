@@ -27,7 +27,11 @@ import core.util.log.MayrioLogger;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.MayflowerImage;
+import worlds.core.MayrioWorld;
 
+/**
+ * The player's Actor.
+ */
 public class Player extends AnimatedActor {
     private static final MayrioLogger logger;
     private static Player instance;
@@ -124,15 +128,26 @@ public class Player extends AnimatedActor {
     public void act() {
         super.act();
 
-
         if (shroomed && !this.getAnimations().equals(set_lg)) {
             this.setAnimationSet(set_lg);
         } else if (!shroomed && !this.getAnimations().equals(set_sm)) {
             this.setAnimationSet(set_sm);
         }
 
-        // Die if below world
-        if (this.getY() > Mayflower.getHeight()) {
+        // Restart if dead, lives > 0, space pressed
+        if (Mayflower.isKeyDown(Keyboard.KEY_SPACE) && lives > 0 && dead) {
+            dead = false;
+            this.setGravity(true);
+            this.setCollides(true);
+            this.setSpeedX(0);
+
+            MayrioWorld world = this.getWorld();
+            world.removeObjects(world.getObjects(TextActor.class));
+            world.init();
+        }
+
+        // Die if below world and not already dead
+        if (this.getY() > Mayflower.getHeight() && !dead) {
             this.kill();
         }
 
@@ -235,16 +250,36 @@ public class Player extends AnimatedActor {
      * Kill the player instantly.
      */
     private void kill() {
+
         if (dead) {
             return;
         }
 
-        dead = true;
+
+        // Decrease lives
         lives--;
+        dead = true;
+
+        // Make sure the animation is right-side-up
+        this.setRotation(Direction.RIGHT.getAngle());
+
+        // Animation
         this.setAnimation(death);
         this.setGravity(false);
         this.setCollides(false);
+
+
+        // Log
         logger.logf(LogLevel.INFO, "Player died! %d lives left.", lives);
+
+        // Display lives on screen
+        TextActor text = new TextActor("", 32);
+        if (this.lives > 0) {
+            text.setText("You died! Press space to restart.");
+        } else {
+            text.setText("Game over!");
+        }
+        this.getWorld().addObject(text, (Mayflower.getWidth() / 2) - (text.getImage().getWidth() / 2), (Mayflower.getHeight() / 2) - text.getImage().getHeight());
     }
 
     /**
@@ -259,5 +294,26 @@ public class Player extends AnimatedActor {
      */
     public int getPoints() {
         return points;
+    }
+
+    /**
+     * Add a life.
+     */
+    void addLife() {
+        lives++;
+    }
+
+    /**
+     * Return the player's life count.
+     */
+    public int getLives() {
+        return lives;
+    }
+
+    /**
+     * Check if player is crouching
+     */
+    boolean isCrouching() {
+        return this.getCurrentAnimation().equals(getAnimations().getAnimation("crouchLeft")) || this.getCurrentAnimation().equals(getAnimations().getAnimation("crouchRight"));
     }
 }

@@ -17,7 +17,10 @@
 
 package actors.characters;
 
-import actors.core.PhysActor;
+import actors.core.AnimatedActor;
 
-public class YoshiCoin extends PhysActor {
+/**
+ * A larger coin. Adds more points.
+ */
+public class YoshiCoin extends AnimatedActor {
 }

@@ -18,7 +18,9 @@
 package worlds.core;
 
 import actors.characters.Player;
+import actors.core.Coordinate;
 import actors.core.Direction;
+import core.Grid;
 import core.Main;
 import mayflower.Actor;
 import mayflower.Mayflower;
@@ -39,20 +41,26 @@ public class FramedWorld extends MayrioWorld {
     }
 
     @Override
+    public void init() {
+        super.init();
+        for (Frame frame : frames) {
+            frame.init();
+        }
+        Grid grid = Main.getGrid();
+        Player player = Main.getPlayer();
+        Coordinate spawnPos = grid.gridToScreen(4, 9);
+        addObject(player, spawnPos.x(), spawnPos.y());
+    }
+
+    @Override
     public void act() {
+        super.act();
         if (player != null && getPlyEdge() != null) {
             if (getPlyEdge().equals(Direction.RIGHT) && currentFrame + 1 < frames.size()) {
                 nextFrame();
             } else if (getPlyEdge().equals(Direction.LEFT) && currentFrame - 1 >= 0) {
                 previousFrame();
             }
-        }
-    }
-
-    @Override
-    public void init() {
-        for (Frame frame : frames) {
-            frame.init();
         }
     }
 
