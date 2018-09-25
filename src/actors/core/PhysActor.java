@@ -33,6 +33,7 @@ public class PhysActor extends MayrioActor {
     private double speedY;
     private boolean grounded;
     private boolean gravity;
+    private boolean kinematic;
 
     PhysActor() {
         this.maxSpeedX = 1;
@@ -83,27 +84,32 @@ public class PhysActor extends MayrioActor {
     }
 
     private void collide(MayrioActor other) {
-        double left1 = this.getEdge(Direction.LEFT).dx();
-        double left2 = other.getEdge(Direction.LEFT).dx();
-        double right1 = this.getEdge(Direction.RIGHT).dx();
-        double right2 = other.getEdge(Direction.RIGHT).dx();
-        double top1 = this.getEdge(Direction.UP).dy();
-        double top2 = other.getEdge(Direction.UP).dy();
-        double bottom1 = this.getEdge(Direction.DOWN).dy();
-        double bottom2 = other.getEdge(Direction.DOWN).dy();
-
-        double overlap_x = Math.max(0, Math.min(right1, right2) - Math.max(left1, left2));
-        double overlap_y = Math.max(0, Math.min(bottom1, bottom2) - Math.max(top1, top2));
-
-        if (overlap_x <= 0 || overlap_y <= 0) {
+        if (kinematic) {
             return;
         }
 
-        if (Math.abs(overlap_y - other.getImage().getHeight()) < 2) {
-            overlap_y = 0;
-        }
+        double left1 = this.getEdge(Direction.LEFT).dx();
+        double right1 = this.getEdge(Direction.RIGHT).dx();
+        double top1 = this.getEdge(Direction.UP).dy();
+        double bottom1 = this.getEdge(Direction.DOWN).dy();
 
-        this.setLocation(getX() + overlap_x, getY() - overlap_y);
+        double left2 = other.getEdge(Direction.LEFT).dx();
+        double right2 = other.getEdge(Direction.RIGHT).dx();
+        double top2 = other.getEdge(Direction.UP).dy();
+        double bottom2 = other.getEdge(Direction.DOWN).dy();
+
+        if (right1 >= left2) {
+            moveDirect(-1, 0);
+        }
+        if (left1 <= right2) {
+            moveDirect(1, 0);
+        }
+        if (bottom1 >= top2) {
+            moveDirect(0, 1);
+        }
+        if (top1 <= bottom2) {
+            moveDirect(0, -1);
+        }
     }
 
     /**
@@ -125,11 +131,18 @@ public class PhysActor extends MayrioActor {
     }
 
     /**
-     * moves an object at a speed at a direction
+     * Moves an object in the given direction
      */
     protected void moveDirect(int distance, Direction direction) {
         this.setRotation(direction.getAngle());
         super.move(distance);
+    }
+
+    /**
+     * Move (x,y) amount of pixels
+     */
+    protected void moveDirect(double x, double y) {
+        this.setLocation(this.getX() + x, this.getY() + y);
     }
 
     /**
@@ -164,6 +177,14 @@ public class PhysActor extends MayrioActor {
         return speedY;
     }
 
+    public void setSpeedY(double speedY) {
+        this.speedY = speedY;
+    }
+
+    public double getMaxSpeedY() {
+        return maxSpeedY;
+    }
+
     protected void setMaxSpeedY(int speed) {
         maxSpeedY = speed;
     }
@@ -186,5 +207,9 @@ public class PhysActor extends MayrioActor {
 
     protected void setGravity(boolean gravity) {
         this.gravity = gravity;
+    }
+
+    protected void setKinematic(boolean kinematic) {
+        this.kinematic = kinematic;
     }
 }

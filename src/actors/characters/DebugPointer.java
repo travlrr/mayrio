@@ -32,18 +32,15 @@ public class DebugPointer extends StaticActor {
         sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/debugpointers.png");
     }
 
-    private int size;
-
     public DebugPointer(int size) {
         super(sheet.getSprite(size), false);
-        this.size = size;
     }
 
     public void setPosition(double x, double y) {
-        this.setLocation(x, y);
+        this.setLocation(x - (this.getImage().getWidth() / 2.0), y - (this.getImage().getHeight() / 2.0));
     }
 
     public void setPosition(Coordinate pos) {
-        this.setLocation(pos.dx(), pos.dy());
+        this.setLocation(pos.dx() - (this.getImage().getWidth() / 2.0), pos.dy() - (this.getImage().getHeight() / 2.0));
     }
 }

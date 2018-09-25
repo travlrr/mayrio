@@ -21,17 +21,25 @@ import actors.characters.*;
 import actors.core.Coordinate;
 import actors.core.TextActor;
 import core.Main;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 import mayflower.Actor;
 import mayflower.World;
 
 import java.util.Iterator;
 
 public class MayrioWorld extends World {
+    private static SpriteSheet backgrounds;
+
+    static {
+        backgrounds = new SpriteSheet(new Dimension(512, 432), "/sprites/background.png");
+    }
+
     private TextActor points;
     private TextActor lives;
 
     public MayrioWorld() {
-        this.setPaintOrder(Ground.class, Player.class, Dust.class, Cannon.class, CannonProjectile.class);
+        this.setPaintOrder(Ground.class, GoalBg.class, Player.class, GoalFg.class, Dust.class, Cannon.class, CannonProjectile.class);
     }
 
     public void init() {
@@ -44,6 +52,14 @@ public class MayrioWorld extends World {
         this.addUi();
     }
 
+    protected void initNoUi() {
+        Iterator<Actor> iterator = this.getObjects().iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+    }
+
     @Override
     public void act() {
         if (!(points == null) && !(lives == null)) {
@@ -52,7 +68,7 @@ public class MayrioWorld extends World {
         }
     }
 
-    protected void addUi() {
+    void addUi() {
         points = new TextActor("Points: 0", 32);
         lives = new TextActor("Lives: 5", 32);
         this.addObject(points, 16, 0);
@@ -61,5 +77,15 @@ public class MayrioWorld extends World {
 
     public void addObject(Actor object, Coordinate pos) {
         super.addObject(object, pos.x(), pos.y());
+    }
+
+    public void addObjects(Actor... objects) {
+        for (Actor a : objects) {
+            super.addObject(a, 0, 0);
+        }
+    }
+
+    protected void setBackground(int index) {
+        this.setBackground(backgrounds.getSprite(index));
     }
 }

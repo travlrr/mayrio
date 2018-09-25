@@ -15,29 +15,20 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds.frames.stage1;
+package actors.characters;
 
-import actors.characters.Goomba;
-import actors.characters.QuestionBlock;
-import actors.core.Direction;
-import core.Grid;
-import worlds.core.Frame;
-import worlds.core.FramedWorld;
-import worlds.core.WorldBuilder;
+import actors.core.StaticActor;
+import core.sprites.Dimension;
+import core.sprites.SpriteSheet;
 
-/**
- * Frame 1 of stage 1
- */
-public class Stage1f1 extends Frame {
-    public Stage1f1(FramedWorld parent) {
-        super(parent);
+public class GoalBg extends StaticActor {
+    static SpriteSheet sheet;
+
+    static {
+        sheet = new SpriteSheet(new Dimension(16, 40), "/sprites/blocks/goal_bg.png");
     }
 
-    @Override
-    protected void init() {
-        WorldBuilder.setWorld(this.getParent());
-        WorldBuilder.createFlatGround();
-        this.addObject(new Goomba(Direction.LEFT), Grid.toScreen(12, 10));
-        this.addObject(new QuestionBlock(false), Grid.toScreen(5, 7));
+    GoalBg() {
+        super(sheet.getSprite(0), false);
     }
 }

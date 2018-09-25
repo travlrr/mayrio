@@ -38,6 +38,7 @@ public class CannonProjectile extends AnimatedActor {
 
     CannonProjectile(Direction direction) {
         anim = new Animation(20, sheet.getSprites(0, 1)).mirrorHorizontal().mirrorVertical();
+
         this.direction = direction;
         this.setAnimation(anim);
         this.setCollides(false);
@@ -48,9 +49,15 @@ public class CannonProjectile extends AnimatedActor {
     public void act() {
         super.act();
         this.moveDirect(4, direction);
-        Player ply = getOneIntersectingObject(Player.class);
-        if (ply != null && !ply.isCrouching()) {
-            ply.hurt();
+
+        Player player = this.getOneIntersectingObject(Player.class);
+        if (player != null) {
+            if (Math.abs(player.getEdge(Direction.DOWN).y() - this.getEdge(Direction.UP).y()) < 12) {
+                this.die();
+                player.setSpeedY(player.getMaxSpeedY() / 2);
+            } else if (!player.isCrouching()) {
+                player.hurt();
+            }
         }
     }
 }

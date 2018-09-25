@@ -20,7 +20,6 @@ package worlds.core;
 import actors.characters.Ground;
 import actors.core.Coordinate;
 import actors.core.GroundType;
-import actors.core.MayrioActor;
 import core.Grid;
 import mayflower.Mayflower;
 import mayflower.World;
@@ -61,25 +60,6 @@ public class WorldBuilder {
             Coordinate coords = Grid.toScreen(x, 0);
             world.addObject(ground1, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 3);
             world.addObject(ground2, coords.x(), Mayflower.getHeight() - ground1.getImage().getHeight() * 2);
-        }
-    }
-
-    /**
-     * Draws a line of blocks
-     *
-     * @param posX   X position of line
-     * @param posY   Y position of line
-     * @param length Length of line, in cells
-     */
-    public static void createLine(int posX, int posY, int length, Class<? extends MayrioActor> type) {
-        for (int x = posX; x < (posX + length); x++) {
-            MayrioActor a = null;
-            try {
-                a = type.newInstance();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            world.addObject(a, x, posY);
         }
     }
 }

@@ -15,29 +15,8 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds.frames.stage1;
+package actors.core;
 
-import actors.characters.Goomba;
-import actors.characters.QuestionBlock;
-import actors.core.Direction;
-import core.Grid;
-import worlds.core.Frame;
-import worlds.core.FramedWorld;
-import worlds.core.WorldBuilder;
+public class Smashable {
 
-/**
- * Frame 1 of stage 1
- */
-public class Stage1f1 extends Frame {
-    public Stage1f1(FramedWorld parent) {
-        super(parent);
-    }
-
-    @Override
-    protected void init() {
-        WorldBuilder.setWorld(this.getParent());
-        WorldBuilder.createFlatGround();
-        this.addObject(new Goomba(Direction.LEFT), Grid.toScreen(12, 10));
-        this.addObject(new QuestionBlock(false), Grid.toScreen(5, 7));
-    }
 }

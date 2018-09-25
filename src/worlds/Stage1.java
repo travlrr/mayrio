@@ -17,25 +17,26 @@
 
 package worlds;
 
-import core.sprites.Dimension;
-import core.sprites.SpriteSheet;
 import worlds.core.Frame;
 import worlds.core.FramedWorld;
 import worlds.frames.stage1.Stage1f1;
 import worlds.frames.stage1.Stage1f2;
+import worlds.frames.stage1.Stage1f3;
+import worlds.frames.stage1.Stage1f4;
 
 /**
  * Stage 1
  */
 public class Stage1 extends FramedWorld {
 
-    public Stage1() {
+    Stage1() {
         Frame f1 = new Stage1f1(this);
         Frame f2 = new Stage1f2(this);
-        registerFrames(f1, f2);
+        Frame f3 = new Stage1f3(this);
+        Frame f4 = new Stage1f4(this);
+        registerFrames(f1, f2, f3, f4);
 
-        SpriteSheet sheet = new SpriteSheet(new Dimension(512, 432), "/sprites/background.png");
-        this.setBackground(sheet.getSprite(0));
+        this.setBackground(0);
     }
 
     @Override

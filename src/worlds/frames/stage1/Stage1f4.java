@@ -15,9 +15,24 @@
  * along with mayrio.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package worlds;
+package worlds.frames.stage1;
 
+import actors.characters.GoalFg;
+import core.Grid;
+import worlds.core.Frame;
 import worlds.core.FramedWorld;
+import worlds.core.WorldBuilder;
 
-public class Stage2 extends FramedWorld {
+public class Stage1f4 extends Frame {
+    public Stage1f4(FramedWorld parent) {
+        super(parent);
+    }
+
+    @Override
+    protected void init() {
+        WorldBuilder.setWorld(this.getParent());
+        WorldBuilder.createFlatGround();
+        GoalFg goal = new GoalFg();
+        this.addObject(goal, Grid.toScreen(8, 9));
+    }
 }

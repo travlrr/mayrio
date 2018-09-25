@@ -17,38 +17,38 @@
 
 package actors.characters;
 
-import actors.core.AnimatedActor;
-import actors.core.Animation;
 import actors.core.Direction;
+import actors.core.MayrioActor;
+import actors.core.StaticAnimation;
+import actors.core.Walker;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
-/**
- * A small animated sprite that's displayed when Mario rapidly switches direction.
- */
-public class Dust extends AnimatedActor {
+public class MushroomRed extends Walker {
     private static SpriteSheet sheet;
 
     static {
-        sheet = new SpriteSheet(new Dimension(8, 8), "/sprites/dust.png");
+        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/items/powerups.png");
     }
 
-    private Animation anim;
-
-    public Dust() {
-        anim = new Animation(10, sheet.getSprites(0, 1, 2, 3));
-        this.setAnimation(anim);
-        this.setCollides(false);
+    MushroomRed(Direction direction) {
+        super(direction, 1);
+        this.setAnimation(new StaticAnimation(sheet.getSprite(1)));
         this.setGravity(false);
-        this.setSpeedX(1);
+        this.setCollides(false);
     }
 
     @Override
     public void act() {
         super.act();
-        if (this.getCurrentAnimation().getCurrentFrame() == 4) {
-            this.getWorld().removeObject(this);
+        if (!isTouching(MayrioActor.class)) {
+            moveDirect(0, 2);
         }
-        this.move(Direction.UP);
+
+        Player player = this.getOneIntersectingObject(Player.class);
+        if (player != null) {
+            this.die();
+            player.powerUp();
+        }
     }
 }

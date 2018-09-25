@@ -17,38 +17,35 @@
 
 package actors.characters;
 
-import actors.core.AnimatedActor;
-import actors.core.Animation;
-import actors.core.Direction;
+import actors.core.StaticActor;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
-/**
- * A small animated sprite that's displayed when Mario rapidly switches direction.
- */
-public class Dust extends AnimatedActor {
-    private static SpriteSheet sheet;
+public class GoalFg extends StaticActor {
+    static SpriteSheet sheet;
 
     static {
-        sheet = new SpriteSheet(new Dimension(8, 8), "/sprites/dust.png");
+        sheet = new SpriteSheet(new Dimension(16, 40), "/sprites/blocks/goal_fg.png");
     }
 
-    private Animation anim;
+    private GoalBg bg;
 
-    public Dust() {
-        anim = new Animation(10, sheet.getSprites(0, 1, 2, 3));
-        this.setAnimation(anim);
-        this.setCollides(false);
-        this.setGravity(false);
-        this.setSpeedX(1);
+    public GoalFg() {
+        super(sheet.getSprite(0), false);
     }
 
     @Override
     public void act() {
         super.act();
-        if (this.getCurrentAnimation().getCurrentFrame() == 4) {
-            this.getWorld().removeObject(this);
+
+        if (bg == null) {
+            bg = new GoalBg();
+            this.getWorld().addObject(bg, this.getX() - 32, this.getY());
         }
-        this.move(Direction.UP);
+
+        Player player = this.getOneIntersectingObject(Player.class);
+        if (player != null) {
+            player.win();
+        }
     }
 }

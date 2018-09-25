@@ -27,6 +27,7 @@ import core.util.log.MayrioLogger;
 import mayflower.Keyboard;
 import mayflower.Mayflower;
 import mayflower.MayflowerImage;
+import mayflower.World;
 import worlds.core.MayrioWorld;
 
 /**
@@ -53,6 +54,7 @@ public class Player extends AnimatedActor {
     private Timer hurtTimer;
     private boolean shroomed;
     private boolean dead;
+    private boolean won;
     private int points;
     private int lives;
 
@@ -80,6 +82,7 @@ public class Player extends AnimatedActor {
         Animation sm_jumpLeft = sm_jumpRight.mirrorVertical();
         Animation sm_fallRight = new StaticAnimation(mario_sm.getSprite(4)).mirrorHorizontal();
         Animation sm_fallLeft = sm_fallRight.mirrorVertical();
+        Animation sm_win = new StaticAnimation(mario_sm.getSprite(7));
 
         // Large Mario animations
         Animation lg_idleRight = new StaticAnimation(mario_lg.getSprite(0)).mirrorHorizontal();
@@ -92,6 +95,7 @@ public class Player extends AnimatedActor {
         Animation lg_jumpLeft = lg_jumpRight.mirrorVertical();
         Animation lg_fallRight = new StaticAnimation(mario_lg.getSprite(5)).mirrorHorizontal();
         Animation lg_fallLeft = lg_fallRight.mirrorVertical();
+        Animation lg_win = new StaticAnimation(mario_lg.getSprite(8));
 
         // Death animation
         MayflowerImage[] deathFrames = new MayflowerImage[]{
@@ -101,12 +105,12 @@ public class Player extends AnimatedActor {
         death = new Animation(15, deathFrames);
 
         // Initialize
-        String[] names = {"idleLeft", "idleRight", "crouchLeft", "crouchRight", "walkLeft", "walkRight", "jumpRight", "jumpLeft", "fallRight", "fallLeft"};
+        String[] names = {"idleLeft", "idleRight", "crouchLeft", "crouchRight", "walkLeft", "walkRight", "jumpRight", "jumpLeft", "fallRight", "fallLeft", "win"};
 
-        Animation[] anims_sm = {sm_idleLeft, sm_idleRight, sm_crouchLeft, sm_crouchRight, sm_walkLeft, sm_walkRight, sm_jumpRight, sm_jumpLeft, sm_fallRight, sm_fallLeft};
+        Animation[] anims_sm = {sm_idleLeft, sm_idleRight, sm_crouchLeft, sm_crouchRight, sm_walkLeft, sm_walkRight, sm_jumpRight, sm_jumpLeft, sm_fallRight, sm_fallLeft, sm_win};
         set_sm = new AnimationSet(anims_sm, names);
 
-        Animation[] anims_lg = {lg_idleLeft, lg_idleRight, lg_crouchLeft, lg_crouchRight, lg_walkLeft, lg_walkRight, lg_jumpRight, lg_jumpLeft, lg_fallRight, lg_fallLeft};
+        Animation[] anims_lg = {lg_idleLeft, lg_idleRight, lg_crouchLeft, lg_crouchRight, lg_walkLeft, lg_walkRight, lg_jumpRight, lg_jumpLeft, lg_fallRight, lg_fallLeft, lg_win};
         set_lg = new AnimationSet(anims_lg, names);
 
         this.setAnimationSet(set_sm);
@@ -132,6 +136,12 @@ public class Player extends AnimatedActor {
             this.setAnimationSet(set_lg);
         } else if (!shroomed && !this.getAnimations().equals(set_sm)) {
             this.setAnimationSet(set_sm);
+        }
+
+        // Stop in animation if won
+        if (won) {
+            this.setAnimation("win");
+            return;
         }
 
         // Restart if dead, lives > 0, space pressed
@@ -250,15 +260,19 @@ public class Player extends AnimatedActor {
      * Kill the player instantly.
      */
     private void kill() {
-
         if (dead) {
             return;
         }
 
+        // Disable power-up
+        shroomed = false;
 
         // Decrease lives
         lives--;
         dead = true;
+
+        // Points to 0
+        points = 0;
 
         // Make sure the animation is right-side-up
         this.setRotation(Direction.RIGHT.getAngle());
@@ -290,6 +304,13 @@ public class Player extends AnimatedActor {
     }
 
     /**
+     * Add some points.
+     */
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    /**
      * Return the player's point count.
      */
     public int getPoints() {
@@ -311,9 +332,28 @@ public class Player extends AnimatedActor {
     }
 
     /**
+     * Set player to powered-up state
+     */
+    void powerUp() {
+        this.shroomed = true;
+        this.moveDirect(0, -8);
+    }
+
+    /**
      * Check if player is crouching
      */
     boolean isCrouching() {
         return this.getCurrentAnimation().equals(getAnimations().getAnimation("crouchLeft")) || this.getCurrentAnimation().equals(getAnimations().getAnimation("crouchRight"));
+    }
+
+    void win() {
+        this.won = true;
+        this.setGravity(false);
+        this.setCollides(false);
+        this.setRotation(Direction.RIGHT.getAngle());
+
+        World world = this.getWorld();
+        TextActor text = new TextActor("You won!", 64);
+        world.addObject(text, world.getWidth() / 2 - (text.getImage().getWidth() / 2), world.getHeight() / 2 - (text.getImage().getHeight() / 2));
     }
 }

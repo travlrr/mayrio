@@ -22,7 +22,7 @@ import core.sprites.SpriteSheet;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
 import mayflower.Mayflower;
-import worlds.Stage1;
+import worlds.Menu;
 import worlds.core.MayrioWorld;
 
 public class Main extends Mayflower {
@@ -55,12 +55,8 @@ public class Main extends Mayflower {
         player = Player.get();
 
         MayrioLogger.setLevel(LogLevel.ALL);
-        MayrioWorld world = new Stage1();
+        MayrioWorld world = new Menu();
         world.init();
-
-
         Mayflower.setWorld(world);
-        Mayflower.showBounds(false);
-        Mayflower.showFPS(false);
     }
 }

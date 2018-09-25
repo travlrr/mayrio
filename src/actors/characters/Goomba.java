@@ -17,38 +17,40 @@
 
 package actors.characters;
 
-import actors.core.AnimatedActor;
 import actors.core.Animation;
 import actors.core.Direction;
+import actors.core.Walker;
 import core.sprites.Dimension;
 import core.sprites.SpriteSheet;
 
-/**
- * A small animated sprite that's displayed when Mario rapidly switches direction.
- */
-public class Dust extends AnimatedActor {
+public class Goomba extends Walker {
     private static SpriteSheet sheet;
 
     static {
-        sheet = new SpriteSheet(new Dimension(8, 8), "/sprites/dust.png");
+        sheet = new SpriteSheet(new Dimension(16, 16), "/sprites/hazard/goomba.png");
     }
 
     private Animation anim;
 
-    public Dust() {
-        anim = new Animation(10, sheet.getSprites(0, 1, 2, 3));
+    public Goomba(Direction direction) {
+        super(direction, 1);
+        anim = new Animation(10, sheet.getSprites(0, 1)).mirrorVertical().mirrorHorizontal();
         this.setAnimation(anim);
-        this.setCollides(false);
         this.setGravity(false);
-        this.setSpeedX(1);
+        this.setCollides(false);
     }
 
     @Override
     public void act() {
         super.act();
-        if (this.getCurrentAnimation().getCurrentFrame() == 4) {
-            this.getWorld().removeObject(this);
+        Player player = this.getOneIntersectingObject(Player.class);
+        if (player != null) {
+            if (Math.abs(player.getEdge(Direction.DOWN).y() - this.getEdge(Direction.UP).y()) < 12) {
+                this.die();
+                player.setSpeedY(player.getMaxSpeedY() / 2);
+            } else {
+                player.hurt();
+            }
         }
-        this.move(Direction.UP);
     }
 }

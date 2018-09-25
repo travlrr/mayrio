@@ -71,7 +71,7 @@ public class TextActor extends MayrioActor {
         FontRenderContext ctx = new FontRenderContext(transform, true, true);
 
         Rectangle2D bounds = font.getAwtFont().getStringBounds(text, ctx);
-        int width = (int) bounds.getWidth() + 8;
+        int width = (int) bounds.getWidth() + 16;
         int height = (int) bounds.getHeight();
 
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

@@ -41,6 +41,7 @@ public class Cannon extends StaticActor {
     public Cannon(Direction direction) {
         super(sheet.getSprite(0), false);
         this.direction = direction;
+
         spawnTimer.set(2500);
     }
 
@@ -52,7 +53,8 @@ public class Cannon extends StaticActor {
             y = this.getY();
 
             CannonProjectile bullet = new CannonProjectile(direction);
-            this.getWorld().addObject(bullet, x - bullet.getImage().getWidth(), y);
+            int bx = direction == Direction.LEFT ? x - bullet.getImage().getWidth() : x + bullet.getImage().getWidth();
+            this.getWorld().addObject(bullet, bx, y);
             spawnTimer.reset();
         }
     }

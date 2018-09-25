@@ -17,6 +17,8 @@
 
 package actors.core;
 
+import actors.characters.Dust;
+import core.Main;
 import mayflower.Actor;
 import worlds.core.MayrioWorld;
 
@@ -35,7 +37,6 @@ public class MayrioActor extends Actor {
      * Gets the center coordinate of an edge of this MayrioActor
      *
      * @param direction Side of edge to get
-     * @return Coordinate
      */
     public Coordinate getEdge(Direction direction) {
         int x = this.getCenterX();
@@ -53,8 +54,11 @@ public class MayrioActor extends Actor {
             case LEFT:
                 return new Coordinate(x - (w / 2), y);
         }
+
+
         assert false;
         return null;
+
     }
 
     @Override
@@ -64,5 +68,11 @@ public class MayrioActor extends Actor {
     @Override
     public MayrioWorld getWorld() {
         return (MayrioWorld) super.getWorld();
+    }
+
+    protected void die() {
+        this.getWorld().addObject(new Dust(), this.getX(), this.getY());
+        this.getWorld().removeObject(this);
+        Main.getPlayer().addPoints(200);
     }
 }

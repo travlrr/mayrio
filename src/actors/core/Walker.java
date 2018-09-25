@@ -17,16 +17,18 @@
 
 package actors.core;
 
-public class BasicEnemy extends AnimatedActor {
+public class Walker extends AnimatedActor {
     private Direction direction;
+    private int speed;
 
-    public BasicEnemy(Direction direction) {
-
+    public Walker(Direction direction, int speed) {
+        this.direction = direction;
+        this.speed = speed;
     }
 
     @Override
     public void act() {
         super.act();
-        this.moveDirect(3, direction);
+        this.moveDirect(speed, direction);
     }
 }

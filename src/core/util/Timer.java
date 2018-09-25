@@ -27,7 +27,7 @@ public class Timer {
 
     /**
      * Create a new Timer.
-     * Goal defaults to 0.
+     * actors.characters.Goal defaults to 0.
      */
     public Timer() {
         this.goal = 0;
