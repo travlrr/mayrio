@@ -28,6 +28,9 @@ import mayflower.World;
 
 import java.util.Iterator;
 
+/**
+ * Adds Mayrio-specific features to Mayflower Worlds
+ */
 public class MayrioWorld extends World {
     private static SpriteSheet backgrounds;
 
@@ -42,6 +45,9 @@ public class MayrioWorld extends World {
         this.setPaintOrder(Ground.class, GoalBg.class, Player.class, GoalFg.class, Dust.class, Cannon.class, CannonProjectile.class);
     }
 
+    /**
+     * Initialize the world
+     */
     public void init() {
         Iterator<Actor> iterator = this.getObjects().iterator();
         while (iterator.hasNext()) {
@@ -52,6 +58,9 @@ public class MayrioWorld extends World {
         this.addUi();
     }
 
+    /**
+     * Initialize the world without UI
+     */
     protected void initNoUi() {
         Iterator<Actor> iterator = this.getObjects().iterator();
         while (iterator.hasNext()) {
@@ -75,16 +84,25 @@ public class MayrioWorld extends World {
         this.addObject(lives, getWidth() - 16 - lives.getImage().getWidth(), 0);
     }
 
+    /**
+     * Add a single object.
+     */
     public void addObject(Actor object, Coordinate pos) {
         super.addObject(object, pos.x(), pos.y());
     }
 
+    /**
+     * Add multiple objects at (0,0)
+     */
     public void addObjects(Actor... objects) {
         for (Actor a : objects) {
             super.addObject(a, 0, 0);
         }
     }
 
+    /**
+     * Set background from available backgrounds (0-8)
+     */
     protected void setBackground(int index) {
         this.setBackground(backgrounds.getSprite(index));
     }
