@@ -27,6 +27,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * The SpriteSheet class represents a full sprite sheet image, and provides functionality for fetching sprites from the sheet.
@@ -46,7 +47,7 @@ public class SpriteSheet {
     private Dimension spriteSize;
     private String path;
     private BufferedImage sheet;
-    private ArrayList<MayflowerImage> sprites;
+    private LinkedList<MayflowerImage> sprites;
 
     /**
      * Constructs a new SpriteSheet, splitting the given sheet image into usable chunks by row-major order.
@@ -58,7 +59,7 @@ public class SpriteSheet {
     public SpriteSheet(Dimension spriteSize, String sheetPath) {
         this.path = sheetPath;
         this.spriteSize = spriteSize;
-        this.sprites = new ArrayList<>();
+        this.sprites = new LinkedList<>();
 
         // Fetch the BufferedImage at the given path
         this.sheet = getImage(sheetPath);
