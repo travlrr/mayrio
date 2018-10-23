@@ -22,20 +22,19 @@ import actors.core.Coordinate;
 import actors.core.Direction;
 import core.Grid;
 import core.Main;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import mayflower.Actor;
 import mayflower.Mayflower;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
 public class FramedWorld extends MayrioWorld {
-    private ArrayList<Frame> frames;
+    private LinkedList<Frame> frames;
     private int currentFrame;
     private Player player;
 
     protected FramedWorld() {
-        frames = new ArrayList<>();
+        frames = new LinkedList<>();
         this.player = Main.getPlayer();
     }
 

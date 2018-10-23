@@ -20,14 +20,12 @@ package core.sprites;
 import core.util.ImageUtils;
 import core.util.log.LogLevel;
 import core.util.log.MayrioLogger;
-import mayflower.MayflowerImage;
-
-import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import javax.imageio.ImageIO;
+import mayflower.MayflowerImage;
 
 /**
  * The SpriteSheet class represents a full sprite sheet image, and provides functionality for fetching sprites from the sheet.
